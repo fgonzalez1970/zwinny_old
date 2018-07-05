@@ -86,7 +86,7 @@ return [
     'profile'                 => 'Profile',
     'signout'                 => 'Sign out',
     'landingdescription'      => 'Laravel 5 package that switchs default Laravel scaffolding/boilerplate to AdminLTE template with Bootstrap 3.0 and Pratt Landing page',
-    'landingdescriptionpratt' => 'Acacha AdminLTE Laravel package template Landing page - Using Pratt',
+    'landingdescriptionpratt' => 'Zwinny CRM - Home',
     'description'             => 'Description',
     'showcase'                => 'Showcase',
     'contact'                 => 'Contact',
@@ -134,4 +134,7 @@ return [
     'loggedin'                => 'Logged in!',
     'entering'                => 'Entering...',
     'registered'              => 'User Registered!',
+    'lastusers'              => 'Last Users Registered',
+    'demousers'              => 'Users in Demo Mode',
+    'activeusers'              => 'User in Tenant Mode',
 ];

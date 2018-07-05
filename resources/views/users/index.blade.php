@@ -13,48 +13,54 @@
 				<!-- Default box -->
 				<div class="box">
 					<div class="box-header with-border">
-						<h3 class="box-title">USERS</h3>
-
+						<h3 class="box-title">{{ trans('adminlte_lang::message.users') }}</h3>
+						<a href="{{ route('users.create') }}" class="btn btn-info btn-sm pull-right">+ {{ trans('adminlte_lang::message.create') }}</a>
 					</div>
 					<div class="box-body">
+						@if ($message = Session::get('success'))
+        				<div class="alert alert-success">
+            				<p>{{ $message }}</p>
+        				</div>
+    					@endif
+    					@if ($message = Session::get('error'))
+        				<div class="alert alert-danger">
+            				<p>{{ $message }}</p>
+        				</div>
+    					@endif
 						<div class="table-responsive">
-						  	<table id="example1" class="table table-bordered table-striped">
+						  	<table id="usersTable" class="table table-bordered table-striped">
 								<thead>
 									<tr>
 										<th>ID</th>
-										<th>Nombre</th>
-										<th>Email</th>
-										<th colspan="3"></th>
+										<th>{{ trans('adminlte_lang::message.name') }}</th>
+										<th>{{ trans('adminlte_lang::message.email') }}</th>
+										<th>{{ trans('adminlte_lang::message.idtenant') }}</th>
+										<th>{{ trans('adminlte_lang::message.actions') }}</th>
 										
 									</tr>
 								</thead>
 								<tbody>
 									@foreach($users as $user)
-										<tr>
+										<tr class="item{{$user->id}}">
 											<td>{{ $user->id }}</td>
 											<td>{{ $user->name }}</td>
 											<td>{{ $user->email }}</td>
-											@can('users.show')
-												<td>
-													<a href="{{ route('users.show',$user->id)}}" class="btn btn-sm btn-default">View</a>
-												</td>
-											@endcan
-											@can('users.edit')
-												<td>
-													<a href="{{ route('users.edit',$user->id)}}" class="btn btn-sm btn-default">Edit</a>
-												
-												</td>
-											@endcan
-											@can('users.destroy')
-	                                			<td>
-			                                    	{!! Form::open(['route' => ['users.destroy', $user->id], 
-			                                    'method' => 'DELETE']) !!}
-				                                        <button class="btn btn-sm btn-danger">
-				                                            Del
-				                                        </button>
-			                                    	{!! Form::close() !!}
-			                                	</td>
-			                                @endcan
+											<td align="center">{{ $user->tenant_id }}</td>
+											<td width="15%">
+												@if ($user->id==1)
+													&nbsp;
+												@else
+													@can('users.show')
+														<a href="{{ action('UserController@show', ['id' => $user->id]) }}" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="top" title="View"><span class="fa fa-list-alt"></span></a>
+													@endcan
+													@can('users.edit')
+													<a href="{{ action('UserController@edit', ['id' => $user->id]) }}" class="btn btn-primary btn-xs" title="Edit" data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil-square-o"></i></a>
+													@endcan
+													@can('users.delete')
+													<a href="{{ action('UserController@destroy', ['id' => $user->id]) }}" class="btn btn-danger btn-xs" title="Delete" data-toggle="tooltip" data-placement="top"><i class="fa fa-trash-o"></i></a>
+													@endcan
+												@endif
+				                            </td> 
 										</tr>
 									@endforeach
 								</tbody>
@@ -68,4 +74,8 @@
 			</div>
 		</div>
 	</div>
+	
+	<!-- jQuery scripts -->
+	<script type="text/javascript" src="js/script_users.js"></script>    
+
 @endsection

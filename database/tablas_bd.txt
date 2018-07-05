@@ -1,0 +1,149 @@
+CREATE TABLE `typesAdresses` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(255) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`description` VARCHAR(255) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`created_at` TIMESTAMP NULL DEFAULT NULL,
+	`updated_at` TIMESTAMP NULL DEFAULT NULL,
+	PRIMARY KEY (`id`)
+)
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=6
+;
+
+CREATE TABLE `typesLivPlaces` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(255) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`description` VARCHAR(255) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`created_at` TIMESTAMP NULL DEFAULT NULL,
+	`updated_at` TIMESTAMP NULL DEFAULT NULL,
+	PRIMARY KEY (`id`)
+)
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=6
+;
+
+CREATE TABLE `continents` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(255) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`description` VARCHAR(255) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`created_at` TIMESTAMP NULL DEFAULT NULL,
+	`updated_at` TIMESTAMP NULL DEFAULT NULL,
+	PRIMARY KEY (`id`)
+)
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=1
+;
+
+CREATE TABLE `countries` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+        `id_continent` INT(10) UNSIGNED NOT NULL,
+	`name` VARCHAR(255) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`description` VARCHAR(255) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`created_at` TIMESTAMP NULL DEFAULT NULL,
+	`updated_at` TIMESTAMP NULL DEFAULT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `FK_countries_continents` (`id_continent`),
+	CONSTRAINT `FK_countries_continents` FOREIGN KEY (`id_continent`) REFERENCES `continents` (`id`)
+)
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=1
+;
+
+CREATE TABLE `states` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+        `id_country` INT(10) UNSIGNED NOT NULL,
+	`name` VARCHAR(255) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`description` VARCHAR(255) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`created_at` TIMESTAMP NULL DEFAULT NULL,
+	`updated_at` TIMESTAMP NULL DEFAULT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `FK_states_countries` (`id_country`),
+	CONSTRAINT `FK_states_countries` FOREIGN KEY (`id_country`) REFERENCES `countries` (`id`)
+)
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=1
+;
+
+CREATE TABLE `cities` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+        `id_state` INT(10) UNSIGNED NOT NULL,
+	`name` VARCHAR(255) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`description` VARCHAR(255) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+	`created_at` TIMESTAMP NULL DEFAULT NULL,
+	`updated_at` TIMESTAMP NULL DEFAULT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `FK_cities_states` (`id_state`),
+	CONSTRAINT `FK_cities_states` FOREIGN KEY (`id_state`) REFERENCES `states` (`id`)
+)
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=1
+;
+
+
+CREATE TABLE `adresses` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`user_id` INT(10) UNSIGNED NOT NULL,
+	`id_type_adr` INT(10) UNSIGNED NULL,
+  `txt_adr` text NULL,
+  `st_ft` varchar(250) NULL,
+  `st_right` varchar(250) NULL,
+  `st_left` varchar(250) NOT NULL,
+  `id_type_livplace` INT(10) UNSIGNED NULL,
+  `num_nam_ext` varchar(250) NULL,
+  `num_nam_int` varchar(250) NULL,
+  `txt_ref` text NULL,
+  `id_continent` INT(10) UNSIGNED NULL,
+  `id_country` INT(10) UNSIGNED NULL,
+  `id_state` INT(10) UNSIGNED NULL,
+  `id_city` INT(10) UNSIGNED NULL,
+  `neighborhood` varchar(250) NULL,  
+  `sector` varchar(250) NULL,
+  `cp` varchar(250) NULL,
+  `coord_x` varchar(250) NULL,
+  `coord_y` varchar(250) NULL,
+`created_at` TIMESTAMP NULL DEFAULT NULL,
+`updated_at` TIMESTAMP NULL DEFAULT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `FK_adresses_users` (`user_id`),
+	INDEX `FK_adresses_typesAdresses` (`id_type_adr`),
+	INDEX `FK_adresses_typesLivPlaces` (`id_type_livplace`),
+        INDEX `FK_adresses_continents` (`id_continent`),
+	INDEX `FK_adresses_countries` (`id_country`),
+	INDEX `FK_adresses_states` (`id_state`),
+	INDEX `FK_adresses_cities` (`id_city`),
+	CONSTRAINT `FK_adresses_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+	CONSTRAINT `FK_adresses_typesAdresses` FOREIGN KEY (`id_type_adr`) REFERENCES `typesAdresses` (`id`),
+	CONSTRAINT `FK_adresses_typesLivPlaces` FOREIGN KEY (`id_type_livplace`) REFERENCES `typesLivPlaces` (`id`),
+	CONSTRAINT `FK_adresses_continents` FOREIGN KEY (`id_continent`) REFERENCES `continents` (`id`),
+	CONSTRAINT `FK_adresses_countries` FOREIGN KEY (`id_country`) REFERENCES `countries` (`id`),
+	CONSTRAINT `FK_adresses_states` FOREIGN KEY (`id_state`) REFERENCES `states` (`id`),
+	CONSTRAINT `FK_adresses_cities` FOREIGN KEY (`id_city`) REFERENCES `cities` (`id`)
+)
+
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=1
+;
+
+CREATE TABLE `networks_leads` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`user_id` INT(10) UNSIGNED NOT NULL,
+	`id_type_net` INT(10) UNSIGNED NULL,
+  	`notes` text NULL,
+  	`nick` varchar(250) NULL,
+	`created_at` TIMESTAMP NULL DEFAULT NULL,
+	`updated_at` TIMESTAMP NULL DEFAULT NULL,
+  	PRIMARY KEY (`id`),
+	INDEX `networks_user_id_foreign` (`user_id`),
+	CONSTRAINT `networks_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+)
+COLLATE='utf8mb4_unicode_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=1
+;

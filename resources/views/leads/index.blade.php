@@ -4,67 +4,73 @@
 	{{ trans('adminlte_lang::message.leads') }}
 @endsection
 
+<?php use App\Http\Controllers\LeadController; 
+$leadControl = new LeadController; ?>
 
 @section('main-content')
+	@include('leads.partials.add')
+	@include('leads.partials.edit')
+	@include('leads.partials.show')
+	@include('leads.partials.delete')
 	<div class="container-fluid spark-screen">
 		<div class="row">
-			<div class="col-md-8 col-md-offset-2">
-
+			<div class="col-md-10 col-md-offset1">
 				<!-- Default box -->
 				<div class="box">
-					<div class="box-header with-border">
-						<h3 class="box-title">LEADS</h3>
 
-						<div class="box-tools pull-right">
-							@can('leads.create')
-								<a href="{{route('leads.create')}}" class="btn btn-sm btn-primary pull-right">Create</a>
-							@endcan
-							
-						</div>
+					<div class="box-header with-border">
+						<h3 class="box-title">{{ trans('adminlte_lang::message.leads') }}</h3>
+						<button class="add-modal btn btn-info btn-sm pull-right">+ {{ trans('adminlte_lang::message.create') }}</button>
 					</div>
 					<div class="box-body">
 						<div class="table-responsive">
-						  	<table id="example1" class="table table-bordered table-striped">
+						  	
+						  	<table id="leadsTable" class="table table-bordered table-hover display nowrap margin-top-10 w-p100">
 								<thead>
 									<tr>
 										<th>ID</th>
-										<th>Código</th>
-										<th>Nombre</th>
-										<th>Apellido</th>
-										<th>Email</th>
-										<th colspan="3"></th>
+										<th>{{ trans('adminlte_lang::message.name') }}</th>
+										<th>{{ trans('adminlte_lang::message.lastname') }}</th>
+										<th>{{ trans('adminlte_lang::message.email') }}</th>
+										<th>{{ trans('adminlte_lang::message.phone') }}</th>
+										<th>{{ trans('adminlte_lang::message.status') }}</th>
+										<th>{{ trans('adminlte_lang::message.dateCrea') }}</th>
+										<th>{{ trans('adminlte_lang::message.entity') }}</th>
+										<th></th>
 										
 									</tr>
 								</thead>
 								<tbody>
 									@foreach($leads as $lead)
-										<tr>
+										<tr class="item{{$lead->id}}">
 											<td>{{ $lead->id }}</td>
-											<td>{{ $lead->codigo_lead }}</td>
 											<td>{{ $lead->nombre_lead }}</td>
 											<td>{{ $lead->apellido_lead }}</td>
-											<td>{{ $lead->email}}</td>
-											@can('leads.show')
-												<td>
-													<a href="{{ route('leads.show',$lead->id)}}" class="btn btn-sm btn-default">View</a>
-												</td>
-											@endcan
-											@can('leads.edit')
-												<td>
-													<a href="{{ route('leads.edit',$lead->id)}}" class="btn btn-sm btn-default">Edit</a>
+											<td>{{ $lead->email_lead }}</td>
+											<td>{{ $lead->tel_lead }}</td>
+											<td>{{ $leadControl->showStatusName($lead->id_status)}}</td>
+											<td>@if ($lead->created_at!=NULL) 
+												{{ date('d/m/Y', strtotime($lead->created_at)) }}
+											@endif
+											</td>
+											<td>Es el origen del registro?</td>
+											<td width="15%">
+												@can('leads.show')
+													<button value="{{ $lead->id }}" class="show-modal btn btn-success btn-xs" data-id="{{$lead->id}}"
+  							data-nombre="{{$lead->nombre}}" data-apellido="{{$lead->apellido}}" data-email="{{$lead->email}}" data-status="{{$lead->id_status}}" data-creat_at="{{$lead->creat_at}}" data-entity="{{$lead->id_entity}}"><span class="glyphicon glyphicon-eye-open"></span></button>
+												@endcan
 												
-												</td>
-											@endcan
-											@can('leads.destroy')
-	                                			<td>
-			                                    	{!! Form::open(['route' => ['leads.destroy', $lead->id], 
-			                                    'method' => 'DELETE']) !!}
-				                                        <button class="btn btn-sm btn-danger">
-				                                            Del
-				                                        </button>
-			                                    	{!! Form::close() !!}
-			                                	</td>
-			                                @endcan
+												@can('leads.edit')
+													<button value="{{ $lead->id }}" class="edit-modal btn btn-info btn-xs" data-id="{{$lead->id}}"
+  							data-nombre="{{$lead->nombre}}" data-apellido="{{$lead->apellido}}" data-email="{{$lead->email}}" data-status="{{$lead->id_status}}" data-creat_at="{{$lead->creat_at}}" data-entity="{{$lead->id_entity}}"><span class="glyphicon glyphicon-pencil"></span></button>
+													
+												@endcan
+												@can('leads.destroy')
+	                                				<button value="{{ $lead->id }}" class="delete-modal btn btn-danger btn-xs" data-id="{{$lead->id}}"
+  							data-nombre="{{$lead->nombre}}">
+  													<span class="glyphicon glyphicon-trash"></span></button>
+			                                    @endcan
+			                                </td>            
 										</tr>
 									@endforeach
 								</tbody>
@@ -78,4 +84,8 @@
 			</div>
 		</div>
 	</div>
+	<!-- jQuery scripts -->
+	<script type="text/javascript" src="js/script_leads.js"></script>  
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
 @endsection
+

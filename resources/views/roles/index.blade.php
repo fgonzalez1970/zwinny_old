@@ -14,47 +14,47 @@
 				<div class="box">
 					<div class="box-header with-border">
 						<h3 class="box-title">ROLES</h3>
-
+						<a href="{{ route('roles.create') }}" class="btn btn-info btn-sm pull-right">+ {{ trans('adminlte_lang::message.create') }}</a>
 					</div>
 					<div class="box-body">
+						@if ($message = Session::get('success'))
+        				<div class="alert alert-success">
+            				<p>{{ $message }}</p>
+        				</div>
+    					@endif
+    					@if ($message = Session::get('error'))
+        				<div class="alert alert-danger">
+            				<p>{{ $message }}</p>
+        				</div>
+    					@endif
 						<div class="table-responsive">
-						  	<table id="example1" class="table table-bordered table-striped">
+						  	<table id="rolesTable" class="table table-bordered table-striped">
 								<thead>
 									<tr>
 										<th>ID</th>
-										<th>Nombre</th>
-										<th>Descripción</th>
-										<th colspan="3"></th>
+										<th>{{ trans('adminlte_lang::message.name') }}</th>
+										<th>{{ trans('adminlte_lang::message.description') }}</th>
+										<th>{{ trans('adminlte_lang::message.actions') }}</th>
 										
 									</tr>
 								</thead>
 								<tbody>
 									@foreach($roles as $role)
-										<tr>
+										<tr class="item{{$role->id}}">
 											<td>{{ $role->id }}</td>
 											<td>{{ $role->name }}</td>
-											<td>{{ $role->descripcion }}</td>
-											@can('roles.show')
-												<td>
-													<a href="{{ route('roles.show',$role->id)}}" class="btn btn-sm btn-default">View</a>
-												</td>
-											@endcan
-											@can('roles.edit')
-												<td>
-													<a href="{{ route('roles.edit',$role->id)}}" class="btn btn-sm btn-default">Edit</a>
-												
-												</td>
-											@endcan
-											@can('roles.destroy')
-	                                			<td>
-			                                    	{!! Form::open(['route' => ['roles.destroy', $role->id], 
-			                                    'method' => 'DELETE']) !!}
-				                                        <button class="btn btn-sm btn-danger">
-				                                            Del
-				                                        </button>
-			                                    	{!! Form::close() !!}
-			                                	</td>
-			                                @endcan
+											<td>{{ $role->description }}</td>
+											<td width="15%">
+												@can('roles.show')
+													<a href="{{ action('RoleController@show', ['id' => $role->id]) }}" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="top" title="View"><span class="fa fa-list-alt"></span></a>
+												@endcan
+												@can('roles.edit')
+												<a href="{{ action('RoleController@edit', ['id' => $role->id]) }}" class="btn btn-primary btn-xs" title="Edit" data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil-square-o"></i></a>
+												@endcan
+												@can('roles.delete')
+												<a href="{{ action('RoleController@destroy', ['id' => $role->id]) }}" class="btn btn-danger btn-xs" title="Delete" data-toggle="tooltip" data-placement="top"><i class="fa fa-trash-o"></i></a>
+												@endcan
+			                                </td> 
 										</tr>
 									@endforeach
 								</tbody>
@@ -68,4 +68,8 @@
 			</div>
 		</div>
 	</div>
+	
+	<!-- jQuery scripts -->
+	<script type="text/javascript" src="js/script_roles.js"></script>    
+
 @endsection

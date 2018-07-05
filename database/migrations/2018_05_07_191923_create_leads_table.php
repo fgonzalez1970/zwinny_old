@@ -17,20 +17,27 @@ class CreateLeadsTable extends Migration
             $table->increments('id');
             $table->integer('id_entity');
             $table->integer('id_condicion_pago')->nullable();
-            $table->integer('id_empleado')->nullable();
-            $table->tinyInteger('id_giro')->nullable();
-            $table->string('codigo_lead')->nullable();
-            $table->string('nombre_lead')->nullable();
-            $table->string('apellido_lead')->nullable();
-            $table->timestamp('fecha_nac_lead')->nullable();
-            $table->string('razon_social')->nullable();
+            $table->integer('id_employed')->nullable();
+            $table->tinyInteger('id_branch')->nullable();
+            $table->string('code_lead')->nullable();
+            $table->string('name_txt')->nullable();
+            $table->string('name_lead')->nullable();
+            $table->string('lastname_lead')->nullable();
+            $table->timestamp('date_birth_lead')->nullable();
+            $table->string('company')->nullable();
             $table->string('rfc')->nullable();
-            $table->string('contacto_lead')->nullable();
-            $table->string('email')->nullable();
-            $table->string('obs_lead')->nullable();
+            $table->string('contact_lead')->nullable();
+            $table->string('email_lead')->nullable();
+            $table->string('phone_fix')->nullable();
+            $table->string('phone_movil')->nullable();
+            $table->text('adress_txt')->nullable();
+            $table->text('obs_lead')->nullable();
             $table->tinyInteger('id_status')->nullable();//ver opciones
-            $table->timestamp('fecha_alta_lead')->nullable();
-            $table->timestamp('fecha_baja_lead')->nullable();
+            $table->foreign('id_status')->references('id')->on('statusleads');
+            $table->rememberToken();
+            $table->tinyInteger('id_source')->nullable();
+            $table->foreign('id_source')->references('id')->on('sourceleads');
+            $table->integer('flag_owner')->default('0'); //0 para todos, y 1 sino buscar relaciones en tabla 
             $table->timestamps();
         });
     }

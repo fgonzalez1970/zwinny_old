@@ -1,27 +1,30 @@
 <div class="form-group">
-	{{ Form::label('id_entity', 'Entity') }}
-	{{ Form::text('id_entity', null, ['class' => 'form-control', 'id' => 'id_entity']) }}
+	{{ Form::label('id', 'id') }}
+	{{ Form::text('id', null, ['class' => 'form-control', 'id' => 'id']) }}
 </div>
 <div class="form-group">
-	{{ Form::label('id_condicion_pago', 'Condición') }}
-	{{ Form::text('id_condicion_pago', null, ['class' => 'form-control', 'id' => 'id_condicion_pago']) }}
+	{{ Form::label('nombre', 'nombre') }}
+	{{ Form::text('nombre', null, ['class' => 'form-control', 'id' => 'nombre']) }}
+	<p class="errorNombre text-center alert alert-danger hidden"></p>
 </div>
 <div class="form-group">
-	{{ Form::label('id_giro', 'Giro') }}
-	{{ Form::text('id_giro', null, ['class' => 'form-control', 'id' => 'id_giro']) }}
+	{{ Form::label('contacto', 'Contacto') }}
+	{{ Form::text('contacto', null, ['class' => 'form-control', 'id' => 'contacto']) }}
+	<p class="errorContacto text-center alert alert-danger hidden"></p>
 </div>
 <div class="form-group">
-	{{ Form::label('nombre_lead', 'Nombre') }}
-	{{ Form::text('nombre_lead', null, ['class' => 'form-control', 'id' => 'nombre_lead']) }}
+	{{ Form::label('nom_bd', 'Nombre de la Base de Datos') }}
+	{{ Form::text('nom_bd', null, ['class' => 'form-control', 'id' => 'nom_bd']) }}
 </div>
 <div class="form-group">
-	{{ Form::label('apellido_lead', 'Apellido') }}
-	{{ Form::text('apellido_lead', null, ['class' => 'form-control', 'id' => 'apellido_lead']) }}
+	{{ Form::label('id_status', 'Estado') }}
+	{{ Form::text('id_status', null, ['class' => 'form-control', 'id' => 'id_status']) }}
 </div>
 <div class="form-group">
-	{{ Form::label('fecha_nac_lead', 'Fecha de Nacimiento') }}
-	{{ Form::text('fecha_nac_lead', null, ['class' => 'form-control', 'id' => 'fecha_nac_lead']) }}
+	{{ Form::label('fecha_activacion', 'Fecha de Activación') }}
+	{{ Form::date('fecha_activacion', null, ['class' => 'form-control', 'id' => 'fecha_activacion']) }}
 </div>
 <div class="form-group">
-	{{ Form::submit('Guardar', ['class' => 'btn btn-sm btn-primary']) }}
+	{{ Form::label('fecha_suspension', 'Fecha de Suspensión') }}
+	{{ Form::date('fecha_suspension', null, ['class' => 'form-control', 'id' => 'fecha_suspension']) }}
 </div>

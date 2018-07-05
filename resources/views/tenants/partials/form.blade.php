@@ -1,10 +1,16 @@
 <div class="form-group">
-	{{ Form::label('nombre', 'Nombre') }}
+	{{ Form::label('id', 'id') }}
+	{{ Form::text('id', null, ['class' => 'form-control', 'id' => 'id']) }}
+</div>
+<div class="form-group">
+	{{ Form::label('nombre', 'nombre') }}
 	{{ Form::text('nombre', null, ['class' => 'form-control', 'id' => 'nombre']) }}
+	<p class="errorNombre text-center alert alert-danger hidden"></p>
 </div>
 <div class="form-group">
 	{{ Form::label('contacto', 'Contacto') }}
 	{{ Form::text('contacto', null, ['class' => 'form-control', 'id' => 'contacto']) }}
+	<p class="errorContacto text-center alert alert-danger hidden"></p>
 </div>
 <div class="form-group">
 	{{ Form::label('nom_bd', 'Nombre de la Base de Datos') }}
@@ -21,7 +27,4 @@
 <div class="form-group">
 	{{ Form::label('fecha_suspension', 'Fecha de Suspensión') }}
 	{{ Form::date('fecha_suspension', null, ['class' => 'form-control', 'id' => 'fecha_suspension']) }}
-</div>
-<div class="form-group">
-	{{ Form::submit('Guardar', ['class' => 'btn btn-sm btn-primary']) }}
 </div>

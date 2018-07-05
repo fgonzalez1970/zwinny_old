@@ -7,6 +7,14 @@
 	{{ Form::label('email', 'Email') }}
 	{{ Form::text('email', null, ['class' => 'form-control', 'id' => 'email']) }}
 </div>
+<div class="form-group">
+	{{ Form::label('name', 'Password') }}
+	{{ Form::text('name', null, ['class' => 'form-control', 'id' => 'name']) }}
+</div>
+<div class="form-group">
+	{{ Form::label('name', 'Tenant Id') }}
+	{{ Form::text('name', null, ['class' => 'form-control', 'id' => 'name']) }}
+</div>
 <h3>Lista de roles</h3>
 <div class="form-group">
 	<ul class="list-unstyled">
