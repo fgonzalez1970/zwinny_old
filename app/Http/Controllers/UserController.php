@@ -181,6 +181,7 @@ class UserController extends Controller
                     $resp['respuesta'] = $userExt->encriptar('nok2');
                 }
             } else {
+                 $userExt = new User;
                 $resp['respuesta'] = $userExt->encriptar('nok1');
             }
         }catch (Exception $e){
