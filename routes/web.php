@@ -15,6 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/verif_ext/{email}/{clave}', 'UserController@verificaClaveExterna'
+);
+
 Route::group(['middleware' => 'auth'], function () {
     //    Route::get('/link1', function ()    {
 //        // Uses Auth Middleware
@@ -74,21 +77,21 @@ Route::group(['middleware' => 'auth'], function () {
 	
 
 	//Leads
-	Route::get('leads', 'LeadController@index')->name('leads.index')
-		->middleware('has.permission:leads.index');
-	Route::get('leads/create', 'LeadController@create')->name('leads.create')
-		->middleware('has.permission:leads.create');
-	Route::post('leads/store', 'LeadController@store')->name('leads.store')
-		->middleware('has.permission:leads.create');
-	Route::get('leads/{lead}/edit', 'LeadController@edit')->name('leads.edit')
-		->middleware('has.permission:leads.edit');	
-	Route::put('leads/{lead}', 'LeadController@update')->name('leads.update')
-		->middleware('has.permission:leads.edit');
-	Route::get('leads/{lead}', 'LeadController@show')->name('leads.show')
-		->middleware('has.permission:leads.show');
-	Route::delete('leads/{lead}', 'LeadController@destroy')->name('leads.destroy')
-		->middleware('has.permission:leads.destroy');
-	
+	Route::get('leads', 'T01_leadController@index')->name('t01_leads.index')
+		->middleware('has.permission:t01_leads.index');
+	Route::get('leads/create', 'T01_leadController@create')->name('t01_leads.create')
+		->middleware('has.permission:t01_leads.create');
+	Route::post('leads/store', 'T01_leadController@store')->name('t01_leads.store')
+		->middleware('has.permission:t01_leads.create');
+	Route::get('leads/{lead}/edit', 'T01_leadController@edit')->name('t01_leads.edit')
+		->middleware('has.permission:t01_leads.edit');	
+	Route::put('leads/{lead}', 'T01_leadController@update')->name('t01_leads.update')
+		->middleware('has.permission:t01_leads.edit');
+	Route::get('leads/{lead}', 'T01_leadController@show')->name('t01_leads.show')
+		->middleware('has.permission:t01_leads.show');
+	Route::delete('leads/{lead}', 'T01_leadController@destroy')->name('t01_leads.destroy')
+		->middleware('has.permission:t01_leads.destroy');
+
 });
 
 

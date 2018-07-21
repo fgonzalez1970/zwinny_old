@@ -192,12 +192,19 @@ class User extends Authenticatable
   CONSTRAINT `FK_leads_statusleads` FOREIGN KEY (`id_status`) REFERENCES `t01m10_statusleads` (`id`),
   CONSTRAINT `FK_leads_sourcesleads` FOREIGN KEY (`id_source`) REFERENCES `t01m02_sourcesleads` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+        //llenamos la tabla de prospectos con datos de ejemplo
+        $lead = App\T01_lead::create([
+          'name_lead' => '']);
+        
         /*Schema::connection('tenant')->create('leads', function($table)
         {
             $table->increments('id');
             $table->string('type');
             $table->string('name');
         });*/
+
+
 
     }
 
@@ -248,5 +255,14 @@ class User extends Authenticatable
         $profile->created_at=$this->created_at;
         $profile->save();
     }
-    
+
+    function desencriptar($texto){
+      $decrypted = base64_decode($texto);
+      return $decrypted;
+    }
+
+    function encriptar($texto){
+      $encrypted = base64_encode($texto);
+      return $encrypted;
+    }
 }

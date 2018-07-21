@@ -9,6 +9,7 @@ use Caffeinated\Shinobi\Models\Role;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -159,7 +160,32 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-
         return back()->with('success','User eliminado con éxito');
+    }
+
+    public function verificaClaveExterna($email, $clave){
+        //recibimos el email y la clave encriptada
+        //buscamos el usuario por su  mail
+        $userExt = new User;
+        //$claveEncr = $userExt->encriptar($clave);
+        //$emailEncr = $userExt->encriptar($email);
+        try{
+            $emailDes=$userExt->desencriptar($email);
+            $userExt = User::where('email', $emailDes)->first();
+            if ($userExt){
+                $claveDes = $userExt->desencriptar($clave);
+                if (Hash::check($claveDes, $userExt->password)) {
+                    // The passwords match...
+                    $resp['respuesta']= $userExt->encriptar('ok');
+                } else {
+                    $resp['respuesta'] = $userExt->encriptar('nok2');
+                }
+            } else {
+                $resp['respuesta'] = $userExt->encriptar('nok1');
+            }
+        }catch (Exception $e){
+            $resp['respuesta'] = $userExt->encriptar('error');
+        }
+        return response()->json($resp);
     }
 }
