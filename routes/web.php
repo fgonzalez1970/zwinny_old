@@ -85,13 +85,24 @@ Route::group(['middleware' => 'auth'], function () {
 		->middleware('has.permission:t01_leads.create');
 	Route::get('leads/{lead}/edit', 'T01_leadController@edit')->name('t01_leads.edit')
 		->middleware('has.permission:t01_leads.edit');	
-	Route::put('leads/{lead}', 'T01_leadController@update')->name('t01_leads.update')
+	Route::post('leads/{lead}', 'T01_leadController@update')->name('t01_leads.update')
 		->middleware('has.permission:t01_leads.edit');
 	Route::get('leads/{lead}', 'T01_leadController@show')->name('t01_leads.show')
 		->middleware('has.permission:t01_leads.show');
 	Route::delete('leads/{lead}', 'T01_leadController@destroy')->name('t01_leads.destroy')
 		->middleware('has.permission:t01_leads.destroy');
+	Route::get('/leads/export/excel', 'T01_leadController@export')->name('t01_leads.export')
+		->middleware('has.permission:t01_leads.export');
+	Route::post('/leads/import/excel', 'T01_leadController@import')->name('t01_leads.import')
+		->middleware('has.permission:t01_leads.import');
+	Route::get('/leads/listStatus/list', 'T01_leadController@listStatusLeads')->name('t01_leads.listStatus')
+		->middleware('has.permission:t01_leads.show');
+	Route::get('/leads/listSources/list', 'T01_leadController@listSourcesLeads')->name('t01_leads.listSources')
+		->middleware('has.permission:t01_leads.show');
 
+	//Contactos
+	Route::get('contacts', 'T02_contactController@index')->name('t02_contacts.index')
+		->middleware('has.permission:t02_contacts.index');
 });
 
 

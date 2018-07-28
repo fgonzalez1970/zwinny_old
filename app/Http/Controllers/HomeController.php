@@ -42,6 +42,13 @@ class HomeController extends Controller
         $user = Auth::user();
         //el nombre de la bd está formado por zwinny_ + el id del tenant al que pertenece
         $name_db = "zwinny_".$user->tenant_id;
+        $tenant = Tenant::find($user->tenant_id);
+        if ($tenant) {
+          session(['tenant_logo_url' => $tenant->logo_file]);
+        } else {
+          session(['tenant_logo_url' => ""]);
+        }
+        //dd(session('tenant_logo_url'));
         //$name_cnx = "tenant".$user->id;
         if ($user->isRole('admin-zwinny')) {
             //Administrador General Zwinny, va a la bd general
@@ -65,7 +72,7 @@ class HomeController extends Controller
                 $tenant->save();
                 $user->asignaTenantId($tenant->id);
                 $user->createProfile();
-
+                session(['tenant_logo_url' => $tenant->logo_file]);
                 //asignamos el rol
                 $user->assignRole(2);
                 
@@ -73,6 +80,6 @@ class HomeController extends Controller
                 $user->createSchema($name_db,$user->id);
             }
             return view('adminlte::home');
-        }
+        }//else
     }
 }

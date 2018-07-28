@@ -167,8 +167,8 @@ class UserController extends Controller
         //recibimos el email y la clave encriptada
         //buscamos el usuario por su  mail
         $userExt = new User;
-        //$claveEncr = $userExt->encriptar($clave);
-        //$emailEncr = $userExt->encriptar($email);
+        //$clave = $userExt->encriptar($clave);
+        //$email = $userExt->encriptar($email);
         try{
             $emailDes=$userExt->desencriptar($email);
             $userExt = User::where('email', $emailDes)->first();

@@ -63,11 +63,15 @@
                         
             @else
                 <li class="treeview">
-                    <a href="#"><i class='fa fa-users'></i> <span>{{ trans('adminlte_lang::message.leads') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
+                    <a href="#"><i class='fa fa-users'></i> <span>{{ trans('adminlte_lang::message.prospecting') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
                     
-                        @can('leads.index') 
-                            <li><a href="{{ url('leads') }}"><span>{{ trans('adminlte_lang::message.listleads') }}</span></a></li>
+                        @can('t01_leads.index') 
+                            <li><a href="{{ url('leads') }}"><span>{{ trans('adminlte_lang::message.leads') }}</span></a></li>
+                        @endcan
+                        @can('t02_contacts.index') 
+                            <li><a href="{{ url('contacts') }}"><span>{{ trans('adminlte_lang::message.contacts') }}</span></a></li>
+
                         @endcan
                     
                     </ul>

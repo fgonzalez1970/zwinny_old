@@ -147,6 +147,8 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Caffeinated\Shinobi\ShinobiServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+
 
         /*
          * Package Service Providers...
@@ -210,6 +212,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Shinobi' => Caffeinated\Shinobi\Facades\Shinobi::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Caffeinated\Shinobi\Traits\ShinobiTrait;
+use Caffeinated\Shinobi\Models\Role;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
@@ -164,24 +165,31 @@ class User extends Authenticatable
         DB::statement("CREATE TABLE IF NOT EXISTS `t01_leads` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_entity` int(11) DEFAULT NULL,
-  `id_condicion_pago` int(11) DEFAULT NULL,
+  `id_cond_pay` int(11) DEFAULT NULL,
   `id_employee` int(11) DEFAULT NULL,
   `id_branch` int(11) unsigned DEFAULT NULL,
   `code_lead` varchar(25) DEFAULT NULL,
   `name_lead` varchar(250) DEFAULT NULL,
   `lastname_lead` varchar(250) DEFAULT NULL,
   `email_lead` varchar(250) DEFAULT NULL,
-  `date_birth_lead` timestamp NULL DEFAULT NULL,
+  `birthdate_lead` timestamp NULL DEFAULT NULL,
   `company` varchar(250) DEFAULT NULL,
   `rfc` varchar(15) DEFAULT NULL,
   `contact_lead` varchar(15) DEFAULT NULL,
   `phone_fix` varchar(20) DEFAULT NULL,
-  `phone_movil` varchar(20) DEFAULT NULL,
-  `adress_txt` text,
+  `phone_mobile` varchar(20) DEFAULT NULL,
+  `address_txt` text,
+  `country` varchar(50) DEFAULT NULL,
+  `state` varchar(50) DEFAULT NULL,
+  `city` varchar(50) DEFAULT NULL,
   `obs_lead` text,
   `id_status` int(11) unsigned zerofill DEFAULT '1',
   `id_source` int(11) unsigned DEFAULT '0',
   `flag_owner` varchar(1) DEFAULT '0',
+  `facebook` varchar(100) DEFAULT NULL,
+  `twitter` varchar(100) DEFAULT NULL,
+  `instagram` varchar(100) DEFAULT NULL,
+  `skype` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -193,9 +201,30 @@ class User extends Authenticatable
   CONSTRAINT `FK_leads_sourcesleads` FOREIGN KEY (`id_source`) REFERENCES `t01m02_sourcesleads` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
+        //creamos la tabla de relaciones usuarios - leads
+        
+        DB::statement('CREATE TABLE IF NOT EXISTS `leads_users` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_lead` int(11) unsigned NOT NULL,
+  `id_user` int(10) unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
+
+       //creamos la tabla de relaciones leads - status
+       //para guardar los cambios de status del os leads 
+        DB::statement('CREATE TABLE IF NOT EXISTS `lead_statuses` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_lead` int(11) unsigned NOT NULL,
+  `id_status` int(10) unsigned NOT NULL,
+  `date_change` timestamp NULL DEFAULT NULL,
+  `id_user` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
+
         //llenamos la tabla de prospectos con datos de ejemplo
-        $lead = App\T01_lead::create([
-          'name_lead' => '']);
+        //$lead = App\T01_lead::create(['name_lead' => '']);
         
         /*Schema::connection('tenant')->create('leads', function($table)
         {
@@ -264,5 +293,12 @@ class User extends Authenticatable
     function encriptar($texto){
       $encrypted = base64_encode($texto);
       return $encrypted;
+    }
+
+    function getFirstRoleName(){
+      //dd($this->belongsToMany('Caffeinated\Shinobi\Models\Role')->first());
+      $role = $this->belongsToMany('Caffeinated\Shinobi\Models\Role')->first();
+      //dd($role->slug);
+      return $role->slug;
     }
 }

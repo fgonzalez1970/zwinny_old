@@ -4,16 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Continent extends Model
+class Citie extends Model
 {
-    //
     protected $connection = 'mysql';
 
-    public function showContinentName($id)
+    public function showCityName($id)
     {
     	if ($id) {
-        	$continent = Continent::findOrFail($id)->name;
-        	return $continent;
+        	$city = Citie::findOrFail($id)->name;
+        	return $city;
     	} else {
     		return "";
     	}

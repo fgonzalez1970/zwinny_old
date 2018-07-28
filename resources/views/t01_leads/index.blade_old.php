@@ -4,14 +4,14 @@
 	{{ trans('adminlte_lang::message.leads') }}
 @endsection
 
-<?php use App\Http\Controllers\LeadController; 
-$leadControl = new LeadController; ?>
+<?php use App\Http\Controllers\T01_LeadController; 
+$leadControl = new T01_LeadController; ?>
 
 @section('main-content')
-	@include('leads.partials.add')
-	@include('leads.partials.edit')
-	@include('leads.partials.show')
-	@include('leads.partials.delete')
+	@include('t01_leads.partials.add')
+	@include('t01_leads.partials.edit')
+	@include('t01_leads.partials.show')
+	@include('t01_leads.partials.delete')
 	<div class="container-fluid spark-screen">
 		<div class="row">
 			<div class="col-md-10 col-md-offset1">
