@@ -142,7 +142,7 @@ class T01_leadController extends Controller
         //dd("pasé");
         $name_bd = session('name_bd');
         //dd($name_bd);
-        $lead = new Lead;
+        $lead = new T01_lead;
         Config::set('database.connections.bdcnxtemp', array(
             'driver'    => 'mysql',
             'host'      => 'localhost',
