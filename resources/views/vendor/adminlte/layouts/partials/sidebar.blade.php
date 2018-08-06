@@ -70,7 +70,7 @@
                             <li><a href="{{ url('leads') }}"><span>{{ trans('adminlte_lang::message.leads') }}</span></a></li>
                         @endcan
                         @can('t02_contacts.index') 
-                            <li><a href="{{ url('contacts') }}"><span>{{ trans('adminlte_lang::message.contacts') }}</span></a></li>
+                            <li><a href="{{ url('contacts') }}"><span>{{ trans('adminlte_lang::message.activities') }}</span></a></li>
 
                         @endcan
                     

@@ -43,7 +43,7 @@ $leadControl = new T01_LeadController; ?>
 							<div class="col-md-6 col-lg-3 col-xlg-3">
 								<div class="box box-inverse box-info">
 									<div class="box-body text-center">
-										<h1><?php echo count($leads); ?></h1>
+										<h1><?php echo $counts[0]; ?></h1>
 										<h6>Total Prospectos</h6>
 									</div>
 								</div>
@@ -52,7 +52,7 @@ $leadControl = new T01_LeadController; ?>
 							<div class="col-md-6 col-lg-3 col-xlg-3">
 								<div class="box box-success box-inverse">
 									<div class="box-body text-center">
-										<h1 class="font-light text-white">0</h1>
+										<h1 class="font-light text-white"><h1><?php echo $counts[1]; ?></h1></h1>
 										<h6 class="text-white mb-10">Nueva Oportunidad</h6>
 									</div>
 								</div>
@@ -61,8 +61,8 @@ $leadControl = new T01_LeadController; ?>
 							<div class="col-md-6 col-lg-3 col-xlg-3">
 								<div class="box box-inverse box-danger">
 									<div class="box-body text-center">
-										<h1 class="font-light text-white">0</h1>
-										<h6 class="text-white mb-10">Contacto</h6>
+										<h1 class="font-light text-white"><h1><?php echo $counts[2]; ?></h1></h1>
+										<h6 class="text-white mb-10">En Contacto</h6>
 									</div>
 								</div>
 							</div>
@@ -70,11 +70,12 @@ $leadControl = new T01_LeadController; ?>
 							<div class="col-md-6 col-lg-3 col-xlg-3">
 								<div class="box box-inverse box-dark">
 									<div class="box-body text-center">
-										<h1 class="font-light text-white">0</h1>
+										<h1 class="font-light text-white"><h1><?php echo $counts[3]; ?></h1></h1>
 										<h6 class="text-white mb-10">Seguimiento</h6>
 									</div>
 								</div>
 							</div>
+							
 							<!-- Column -->
 						</div>
 						<div class="table-responsive">

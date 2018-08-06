@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
-use App\Lead;
+use \PhpOffice\PhpSpreadsheet\Reader\Csv;
+use \PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use App\Statuslead;
 use App\lead_status;
 use App\T01m01_brancheslead;
@@ -73,8 +74,15 @@ class T01_leadController extends Controller
         //dd($lead->getconnection());
         //DB::setDefaultConnection('tenant2');
         $leads = T01_lead::paginate();
+        //traemos los count por status
+        $counts[0] = count($leads);
+        $counts[1] = T01_lead::where('id_status', 1)->count();
+        $counts[2] = T01_lead::where('id_status', 2)->count();
+        $counts[3] = T01_lead::where('id_status', 3)->count();
+        $counts[4] = T01_lead::where('id_status', 4)->count();
+        $counts[5] = T01_lead::where('id_status', 5)->count();
         //dd($leads);
-        return view('t01_leads.index', compact('leads', 'listUsers'));
+        return view('t01_leads.index', compact('leads', 'listUsers','counts'));
 
         //Modelo::on(\Session::get('nombredb'))
     }
@@ -258,7 +266,7 @@ class T01_leadController extends Controller
         $input = Input::all();
         $validator = Validator::make(Input::all(), $this->rules);
         $name_bd = session('name_bd');
-        $lead = new Lead;
+        $lead = new T01_lead;
         Config::set('database.connections.bdcnxtemp', array(
             'driver'    => 'mysql',
             'host'      => 'localhost',
@@ -403,18 +411,92 @@ class T01_leadController extends Controller
        
     public function import(Request $request)
     {
+        $name_bd = session('name_bd');
+        Config::set('database.connections.bdcnxtemp', array(
+            'driver'    => 'mysql',
+            'host'      => 'localhost',
+            'database'  => $name_bd,
+            'username'  => 'crm_zwinny',
+            'password'  => '2018gdl',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+        ));
+
+        DB::setDefaultConnection('bdcnxtemp');
+        $leadObj = new T01_lead;
+        $leadObj->setConnection('bdcnxtemp');
         $data = $request->all();
         $input = Input::all();
-        $file = $_FILES['file_import']['name'];
-         $uploadedFile = '';
-    
-        $fileName = time().'_'.$file;
-        $sourcePath = $_FILES['file_import']['tmp_name'];
-        $targetPath = "storage/".$fileName;
-            if(move_uploaded_file($sourcePath,$targetPath)){
-                $uploadedFile = $fileName;
+        $filename = $_FILES['file_import']['name'];
+        $uploadedFile = '';
+        $id_status = $_POST['id_status'];
+        $id_source = $_POST['id_source'];
+        $flag_owner = $_POST['flag_owner'];
+
+        if(isset($_FILES['file_import']['name'])) {
+            //return Response::json($filename);
+            $arr_file = explode('.', $_FILES['file_import']['name']);
+            $extension = end($arr_file);
+            if('csv' == $extension) {
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+            } else {
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
             }
-            return Response::json(array('errors' => 'listo'));
+            $spreadsheet = $reader->load($_FILES['file_import']['tmp_name']);
+
+            $sheetData = $spreadsheet->getActiveSheet()->toArray();
+            //iniciamos transacción para ver que no ocurre ningún error en la insersión
+            DB::beginTransaction();
+            try {
+                //recorremos las filas
+                for ($i=1;$i<count($sheetData);$i++){
+                //colocamos cada registro en un arreglo
+                $lead = [
+                    'code_lead' => $sheetData[$i][0],
+                    'name_lead' => $sheetData[$i][1],
+                    'lastname_lead' => $sheetData[$i][2],
+                    'email_lead'    => $sheetData[$i][3],
+                    'birthdate_lead' => $sheetData[$i][4],
+                    'company'       => $sheetData[$i][5],
+                    'rfc'           => $sheetData[$i][6],
+                    'contact_lead'  => $sheetData[$i][7],
+                    'phone_fix'     => $sheetData[$i][8],
+                    'phone_mobile'  => $sheetData[$i][9],
+                    'address_txt'   => $sheetData[$i][10],
+                    'country'       => $sheetData[$i][11],
+                    'state'         => $sheetData[$i][12],
+                    'city'          => $sheetData[$i][13],
+                    'obs_lead'      => $sheetData[$i][14],
+                    'facebook'      => $sheetData[$i][15],
+                    'twitter'       => $sheetData[$i][16], 
+                    'instagram'     => $sheetData[$i][17],
+                    'skype'         => $sheetData[$i][18],
+                    'id_status'     => $id_status,
+                    'id_source'     => $id_source,
+                    'flag_owner'     => $flag_owner,
+                    ];
+
+                    //insertamos el registro en la bd
+                    $result = T01_lead::insert($lead); 
+                }//for
+                
+                DB::commit();
+                $success = true;
+            } catch (\Exception $e) {
+                $success = false;
+                $error = $e->getMessage();
+                DB::rollback();
+                return Response::json(array('errors' => [$error]));
+            }
+
+            if ($success) {
+                $mensaje="Importación realizada con éxito";
+                return response()->json(array('mnsj' => ['Archivo importado con éxito.']));
+            } 
+            //print_r($sheetData);
+        }//if file
+            
     }//function import
 
     /**

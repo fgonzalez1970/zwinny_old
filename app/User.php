@@ -38,14 +38,14 @@ class User extends Authenticatable
 
     function createSchema($schemaName,$idUser)
     {
-        // Creamos la bd
-        //return 
-         //primero asignamos el role
-        //$state = 'INSERT INTO role_user (role_id,user_id) VALUES(2,'.$idUser.')';
-        //DB::statement($state);
-
-        //creamos la bd y seleccionamos la conexión
-        DB::statement('CREATE DATABASE IF NOT EXISTS '.$schemaName);
+        
+        //tratamos primero de crear la base de datos y sus tablas respectivas
+        try{ 
+            DB::statement('CREATE DATABASE IF NOT EXISTS '.$schemaName);
+        } catch (Illuminate\Database\QueryException $ex){ 
+          return redirect()->route('home')->with('error','No se pudo crear la BD');
+        }
+        
         
         Config::set('database.connections.tenant', array(
             'driver'    => 'mysql',
@@ -58,7 +58,16 @@ class User extends Authenticatable
             'prefix'    => '',
         ));
 
+        //definimos la conexións
+
         DB::setDefaultConnection('tenant');
+
+         /****************
+          
+          Sección Prospectos
+
+         ************/
+
         //creamos tabla tipo de direccion
         DB::statement('CREATE TABLE IF NOT EXISTS `t01m03_typesadresses` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -92,7 +101,7 @@ class User extends Authenticatable
 
         //creamos la tabla de tipos de vivienda
         
-        DB::statement('CREATE TABLE IF NOT EXISTS `t01_m04_typeslivplaces` (
+        DB::statement('CREATE TABLE IF NOT EXISTS `t01m04_typeslivplaces` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -101,7 +110,7 @@ class User extends Authenticatable
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
         //llenamos la tabla tipos de vivienda
-        DB::statement("INSERT INTO `t01_m04_typeslivplaces` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
+        DB::statement("INSERT INTO `t01m04_typeslivplaces` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
     (1, 'Casa', 'Casa', NULL, NULL),
     (2, 'Apartamento', 'Apartamento', NULL, NULL),
     (3, 'Galpón', 'Galpón', NULL, NULL),
@@ -182,7 +191,7 @@ class User extends Authenticatable
   `country` varchar(50) DEFAULT NULL,
   `state` varchar(50) DEFAULT NULL,
   `city` varchar(50) DEFAULT NULL,
-  `obs_lead` text,
+  `obs_lead` text NULL,
   `id_status` int(11) unsigned zerofill DEFAULT '1',
   `id_source` int(11) unsigned DEFAULT '0',
   `flag_owner` varchar(1) DEFAULT '0',
@@ -226,16 +235,94 @@ class User extends Authenticatable
         //llenamos la tabla de prospectos con datos de ejemplo
         //$lead = App\T01_lead::create(['name_lead' => '']);
         
-        /*Schema::connection('tenant')->create('leads', function($table)
-        {
-            $table->increments('id');
-            $table->string('type');
-            $table->string('name');
-        });*/
+    /****************
+    
+        Sección Activities (contacts)
+  
+    ************/
 
+        //creamos la tabla fuentes de contactos
+        DB::statement("CREATE TABLE IF NOT EXISTS `t02m11_sourcescontacts` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
+        //llenamos la tabla de las fuentes de los contactos
+        DB::statement("INSERT INTO `t02m11_sourcescontacts` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
+    (1, 'Llamada', 'Llamada Telefónica', NULL, NULL),
+    (2, 'Reunión', 'Reunión o entrevista', NULL, NULL),
+    (3, 'Email', 'Correo Electrónico', NULL, NULL),
+    (4, 'SMS', 'Mensaje de Texto', NULL, NULL),
+    (5, 'Facebook', 'Facebook', NULL, NULL),
+    (6, 'Twitter', 'Twitter', NULL, NULL),
+    (7, 'Instagram', 'Instagram', NULL, NULL),
+    (8, 'Sype', 'Skype', NULL, NULL);");
 
-    }
+        //creamos la tabla status de contactos
+        DB::statement("CREATE TABLE IF NOT EXISTS `t02m12_statuscontacts` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+        //llenamos la tabla de los status de los contactos
+        DB::statement("INSERT INTO `t02m12_statuscontacts` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
+    (1, 'Planificado', 'Contacto planificado', NULL, NULL),
+    (2, 'Efectivo', 'Contacto efectivo', NULL, NULL),
+    (3, 'No Efectivo', 'Contacto no efectivo', NULL, NULL);");
+        
+        //creamos la tabla resultados de los status de contactos
+        DB::statement("CREATE TABLE IF NOT EXISTS `t02m13_resultscontacts` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_statuscont` int(10) unsigned NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+      //llenamos la tabla de las resultados de los contactos
+        DB::statement("INSERT INTO `t02m13_resultscontacts` (`id`, `id_statuscont`, `name`, `description`, `created_at`, `updated_at`) VALUES
+    (1, 1, 'Cortado', 'Cortado', NULL, NULL),
+    (2, 1, 'Ocupado', 'Tono ocupado', NULL, NULL),
+    (3, 1, 'Rechazado', 'Rechazado por la persona', NULL, NULL),
+    (4, 1, 'Identificador Erróneo', 'Num, nick, email, id, etc erróneo', NULL, NULL),
+    (5, 2, 'Concretado', 'Contacto Concretado y finalizado', NULL, NULL);");
+
+         //creamos la tabla de contactos
+        DB::statement("CREATE TABLE IF NOT EXISTS `t02_contacts` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `subject` varchar(255) NOT NULL,
+  `date` timestamp NULL,
+  `flag_prog` varchar(1) NOT NULL,
+  `id_way` varchar(1) NOT NULL,
+  `id_source` int(11) NOT NULL,
+  `id_status` int(11) NOT NULL,
+  `id_result` int(11) NOT NULL,
+  `duration_hr` time NULL,
+  `duration_seg` time NULL,
+  `time_ini` time NULL,
+  `time_fin` time NULL,
+  `id_lead` int(11) NOT NULL,
+  `desc_contact` text NULL,
+  `action` text NULL,
+  `id_user` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+      
+
+    }//function createSchema 
 
     function selectSchemaTnt($schemaName)
     {

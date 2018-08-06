@@ -39,71 +39,38 @@
         $('#importModal').modal('show');
     });
 
-    //$('.modal-footer').on('click', '.import', function() {
-    $("#import-form").on('submit', function(e){
-        alert('aqui');
-        e.preventDefault();
-        var ids = $('[name="assigned_to[]"]').serializeArray();
-        //console.log(ids);
+    $('.modal-footer').on('click', '.import', function() {
+
+    //$("#import-form").on('submit', function(e){
+        //alert('aqui');
+        //e.preventDefault();
+        var form = $(this);
+        var formData = new FormData(document.getElementById("import-form"));
+        //alert("hasta aquí");
         //return false;
         $.ajax({
-                type: 'POST',
                 url: 'leads/import/excel',
-                /*data: {
-                    '_token': $('input[name=_token]').val(),
-                    'file_import': $('#file_import').val(),
-                    'id_status': $('#id_status').val(),
-                    'id_source': $('#id_source').val(),
-                    'ids_users': JSON.stringify(ids),
-                    //'array':JSON.stringify($('#assigned_to').val()),
-                },*/
-                data: new FormData($("#import-form")),
-                contentType: false,
+                type: "post",
+                dataType: "html",
+                data: formData,
                 cache: false,
-                processData:false,
+                contentType: false,
+                processData: false,
                 success: function(data) {
-                    alert("vuelta");
                     console.log(data);
-                    $('.errorFileImport').addClass('hidden');
-                    $('.errorStatus').addClass('hidden');
-                    $('.errorSource').addClass('hidden');
-                    $('.errorFlagOwner').addClass('hidden');
-                    $('.errorAssigned').addClass('hidden');
-                    
                     if ((data.errors)) {
                         setTimeout(function () {
-                            $('#importModal').modal('show');
-                            toastr.error('Validation error!', 'Error Alert', {timeOut: 5000});
+                            $('#import-modal').modal('show');
+                            toastr.error('No se pudo importar el archivo!', 'Import error', {timeOut: 5000});
                         }, 500);
-
-                        if (data.errors.file_import) {
-                            $('.errorFileImport').removeClass('hidden');
-                            $('.errorFileImport').text(data.errors.file_import);
-                        }
-                        if (data.errors.id_source) {
-                            $('.errorSource').removeClass('hidden');
-                            $('.errorSource').text(data.errors.id_source);
-                        }
-                        
-                        if (data.errors.id_status) {
-                            $('.errorStatus').removeClass('hidden');
-                            $('.errorStatus').text(data.errors.id_status);
-                        }
-                        if (data.errors.flag_owner) {
-                            $('.errorFlagOwner').removeClass('hidden');
-                            $('.errorFlagOwner').text(data.errors.flag_owner);
-                        }
-                        if (data.errors.assigned_to) {
-                            $('.errorAssigned').removeClass('hidden');
-                            $('.errorAssigned').text(data.errors.assigned_to);
-                        }                        
                     } else {
-                        alert("nada");
-                        toastr.success('Successfully Import File!', 'Success Alert', {timeOut: 5000});
-                        $('#importModal').modal('hidden');
+                        window.location.reload(true);
+                        toastr.success('Successfully import file!', 'Success Alert', {timeOut: 5000});
                     }
+                    //alert('sali');
                 }
-        });
+            });
+
     });
 
      //file type validation
