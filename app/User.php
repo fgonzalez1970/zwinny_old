@@ -18,6 +18,7 @@ class User extends Authenticatable
 
     protected $connection = 'mysql';
 
+
     /**
      * The attributes that are mass assignable.
      *
@@ -46,10 +47,10 @@ class User extends Authenticatable
           return redirect()->route('home')->with('error','No se pudo crear la BD');
         }
         
-        
+        $host = getenv('HOST_DB');
         Config::set('database.connections.tenant', array(
             'driver'    => 'mysql',
-            'host'      => 'localhost',
+            'host'      => $host,
             'database'  => $schemaName,
             'username'  => 'crm_zwinny',
             'password'  => '2018gdl',
@@ -291,11 +292,12 @@ class User extends Authenticatable
 
       //llenamos la tabla de las resultados de los contactos
         DB::statement("INSERT INTO `t02m13_resultscontacts` (`id`, `id_statuscont`, `name`, `description`, `created_at`, `updated_at`) VALUES
-    (1, 1, 'Cortado', 'Cortado', NULL, NULL),
-    (2, 1, 'Ocupado', 'Tono ocupado', NULL, NULL),
-    (3, 1, 'Rechazado', 'Rechazado por la persona', NULL, NULL),
-    (4, 1, 'Identificador Erróneo', 'Num, nick, email, id, etc erróneo', NULL, NULL),
-    (5, 2, 'Concretado', 'Contacto Concretado y finalizado', NULL, NULL);");
+    (1, 3, 'Cortado', 'Cortado', NULL, NULL),
+    (2, 3, 'Ocupado', 'Tono ocupado', NULL, NULL),
+    (3, 3, 'Rechazado', 'Rechazado por la persona', NULL, NULL),
+    (4, 3, 'Identificador Erróneo', 'Num, nick, email, id, etc erróneo', NULL, NULL),
+    (5, 2, 'Concretado', 'Contacto Concretado y finalizado', NULL, NULL), 
+    (6, 1, 'Por Ejecutar', 'Planeada por ejectutar', NULL, NULL);");
 
          //creamos la tabla de contactos
         DB::statement("CREATE TABLE IF NOT EXISTS `t02_contacts` (
@@ -326,10 +328,11 @@ class User extends Authenticatable
 
     function selectSchemaTnt($schemaName)
     {
+      $host = getenv('HOST_DB');
        //configuramos la conexión
         Config::set('database.connections.tenant', array(
             'driver'    => 'mysql',
-            'host'      => 'localhost',
+            'host'      => $host,
             'database'  => $schemaName,
             'username'  => 'crm_zwinny',
             'password'  => '2018gdl',
@@ -344,9 +347,10 @@ class User extends Authenticatable
     function selectSchemaGral()
     {
        //configuramos la conexión
+        $host = getenv('HOST_DB');
          Config::set('database.connections.crm_zwinny', array(
             'driver'    => 'mysql',
-            'host'      => 'localhost',
+            'host'      => $host,
             'database'  => 'crm_zwinny',
             'username'  => 'crm_zwinny',
             'password'  => '2018gdl',

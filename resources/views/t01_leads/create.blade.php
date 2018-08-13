@@ -5,9 +5,7 @@
 @endsection
 
 <?php 
-
-use App\Http\Controllers\TenantController; 
-$tenantControl = new TenantController; ?>
+?>
 
 @section('main-content')
 	<div class="container-fluid spark-screen">

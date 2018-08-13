@@ -107,18 +107,19 @@ Route::group(['middleware' => 'auth'], function () {
 		->middleware('has.permission:t02_contacts.create');
 	Route::post('contacts/store', 'T02_contactController@store')->name('t02_contacts.store')
 		->middleware('has.permission:t02_contacts.create');
-	Route::get('contacts/{lead}/edit', 'T02_contactController@edit')->name('t02_contacts.edit')
+	Route::get('contacts/{contact}/edit', 'T02_contactController@edit')->name('t02_contacts.edit')
 		->middleware('has.permission:t02_contacts.edit');	
-	Route::post('contacts/{lead}', 'T02_contactController@update')->name('t02_contacts.update')
+	Route::post('contacts/{contact}', 'T02_contactController@update')->name('t02_contacts.update')
 		->middleware('has.permission:t02_contacts.edit');
-	Route::get('contacts/{lead}', 'T02_contactController@show')->name('t02_contacts.show')
+	Route::get('contacts/{contact}', 'T02_contactController@show')->name('t02_contacts.show')
 		->middleware('has.permission:t02_contacts.show');
-	Route::delete('contacts/{lead}', 'T02_contactController@destroy')->name('t02_contacts.destroy')
+	Route::delete('contacts/{contact}', 'T02_contactController@destroy')->name('t02_contacts.destroy')
 		->middleware('has.permission:t02_contacts.destroy');
-	Route::get('/contacts/export/excel', 'T02_contactController@export')->name('t02_contacts.export')
+	Route::get('contacts/export/excel', 'T02_contactController@export')->name('t02_contacts.export')
 		->middleware('has.permission:t02_contacts.export');
-	Route::post('/contacts/import/excel', 'T02_contactController@import')->name('t02_contacts.import')
+	Route::post('contacts/import/excel', 'T02_contactController@import')->name('t02_contacts.import')
 		->middleware('has.permission:t02_contacts.import');
+	Route::get('contacts/listResults/{id}', 'T02_contactController@listResults')->name('t02_contacts.listResults')->middleware('has.permission:t02_contacts.show');
 });
 
 

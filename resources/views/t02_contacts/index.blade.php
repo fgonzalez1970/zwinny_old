@@ -87,11 +87,10 @@ $contactControl = new T02_ContactController; ?>
 										<th>{{ trans('adminlte_lang::message.programmed') }}</th>
 										<th>{{ trans('adminlte_lang::message.date') }}</th>
 										<th>{{ trans('adminlte_lang::message.subject') }}</th>
-										<th>{{ trans('adminlte_lang::message.date') }}</th>
 										<th>{{ trans('adminlte_lang::message.way') }}</th>
 										<th>{{ trans('adminlte_lang::message.status') }}</th>
 										<th>{{ trans('adminlte_lang::message.result') }}</th>
-										<th>{{ trans('adminlte_lang::message.person') }}</th>
+										<th>{{ trans('adminlte_lang::message.lead') }}</th>
 										<th>{{ trans('adminlte_lang::message.actions') }}</th>
 										
 									</tr>
@@ -103,10 +102,10 @@ $contactControl = new T02_ContactController; ?>
 											<td>{{ $contact->flag_prog }}</td>
 											<td>{{ $contact->date }}</td>
 											<td>{{ $contact->subject }}</td>
-											<td>{{ $contact->id_way }}</td>
-											<td>{{ $contact->id_status }}</td>
-											<td>{{ $contact->id_result }}</td>
-											<td>{{ $contact->id_lead}}</td>
+											<td>{{ $contact->showWayName($contact->id_way) }}</td>
+											<td>{{ $contact->showSourceName($contact->id_source) }}</td>
+											<td>{{ $contact->showStatusName($contact->id_status) }}</td>
+											<td>{{ $contact->showLeadName($contact->id_lead)}}</td>
 											<td width="15%">
 												@can('t02_contacts.show')
 													<a href="{{ action('T02_contactController@show', ['id' => $contact->id]) }}" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="top" title="View"><span class="fa fa-list-alt"></span></a>
@@ -135,7 +134,7 @@ $contactControl = new T02_ContactController; ?>
 
   </script>  
 	<!-- jQuery scripts -->
-	<script type="text/javascript" src="js/script_contacts.js"></script>  
+	<script type="text/javascript" src="/js/script_contacts.js"></script>  
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
 @endsection
 

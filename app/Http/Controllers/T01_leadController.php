@@ -12,8 +12,8 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
-use \PhpOffice\PhpSpreadsheet\Reader\Csv;
-use \PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\Reader\Csv;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use App\Statuslead;
 use App\lead_status;
 use App\T01m01_brancheslead;
@@ -57,9 +57,10 @@ class T01_leadController extends Controller
         $lead = new T01_lead;
         $name_bd = session('name_bd');
         //dd($name_bd);
+        $host = getenv('HOST_DB');
         Config::set('database.connections.bdcnxtemp', array(
             'driver'    => 'mysql',
-            'host'      => 'localhost',
+            'host'      => $host,
             'database'  => $name_bd,
             'username'  => 'crm_zwinny',
             'password'  => '2018gdl',
@@ -100,9 +101,10 @@ class T01_leadController extends Controller
         $status = new T01m10_statuslead;
         $name_bd = session('name_bd');
         //dd($name_bd);
+        $host = getenv('HOST_DB');
         Config::set('database.connections.bdcnxtemp', array(
             'driver'    => 'mysql',
-            'host'      => 'localhost',
+            'host'      => $host,
             'database'  => $name_bd,
             'username'  => 'crm_zwinny',
             'password'  => '2018gdl',
@@ -143,9 +145,10 @@ class T01_leadController extends Controller
         $name_bd = session('name_bd');
         //dd($name_bd);
         $lead = new T01_lead;
+        $host = getenv('HOST_DB');
         Config::set('database.connections.bdcnxtemp', array(
             'driver'    => 'mysql',
-            'host'      => 'localhost',
+            'host'      => $host,
             'database'  => $name_bd,
             'username'  => 'crm_zwinny',
             'password'  => '2018gdl',
@@ -188,9 +191,10 @@ class T01_leadController extends Controller
         //dd('aqui');
         $name_bd = session('name_bd');
         //dd($lead->nombre_lead);
+        $host = getenv('HOST_DB');
         Config::set('database.connections.bdcnxtemp', array(
             'driver'    => 'mysql',
-            'host'      => 'localhost',
+            'host'      => $host,
             'database'  => $name_bd,
             'username'  => 'crm_zwinny',
             'password'  => '2018gdl',
@@ -223,9 +227,10 @@ class T01_leadController extends Controller
         $status = new T01m10_statuslead;
         $name_bd = session('name_bd');
         //dd($lead->nombre_lead);
+        $host = getenv('HOST_DB');
         Config::set('database.connections.bdcnxtemp', array(
             'driver'    => 'mysql',
-            'host'      => 'localhost',
+            'host'      => $host,
             'database'  => $name_bd,
             'username'  => 'crm_zwinny',
             'password'  => '2018gdl',
@@ -267,9 +272,10 @@ class T01_leadController extends Controller
         $validator = Validator::make(Input::all(), $this->rules);
         $name_bd = session('name_bd');
         $lead = new T01_lead;
+        $host = getenv('HOST_DB');
         Config::set('database.connections.bdcnxtemp', array(
             'driver'    => 'mysql',
-            'host'      => 'localhost',
+            'host'      => $host,
             'database'  => $name_bd,
             'username'  => 'crm_zwinny',
             'password'  => '2018gdl',
@@ -320,9 +326,10 @@ class T01_leadController extends Controller
     public function destroy($id)
     {
         $name_bd = session('name_bd');
+        $host = getenv('HOST_DB');
         Config::set('database.connections.bdcnxtemp', array(
             'driver'    => 'mysql',
-            'host'      => 'localhost',
+            'host'      => $host,
             'database'  => $name_bd,
             'username'  => 'crm_zwinny',
             'password'  => '2018gdl',
@@ -367,9 +374,10 @@ class T01_leadController extends Controller
     public function export()
     {
         $name_bd = session('name_bd');
+        $host = getenv('HOST_DB');
         Config::set('database.connections.bdcnxtemp', array(
             'driver'    => 'mysql',
-            'host'      => 'localhost',
+            'host'      => $host,
             'database'  => $name_bd,
             'username'  => 'crm_zwinny',
             'password'  => '2018gdl',
@@ -412,9 +420,10 @@ class T01_leadController extends Controller
     public function import(Request $request)
     {
         $name_bd = session('name_bd');
+        $host = getenv('HOST_DB');
         Config::set('database.connections.bdcnxtemp', array(
             'driver'    => 'mysql',
-            'host'      => 'localhost',
+            'host'      => $host,
             'database'  => $name_bd,
             'username'  => 'crm_zwinny',
             'password'  => '2018gdl',
@@ -439,9 +448,9 @@ class T01_leadController extends Controller
             $arr_file = explode('.', $_FILES['file_import']['name']);
             $extension = end($arr_file);
             if('csv' == $extension) {
-                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+                $reader = new Csv();
             } else {
-                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+                $reader = new Xlsx();
             }
             $spreadsheet = $reader->load($_FILES['file_import']['tmp_name']);
 
@@ -508,9 +517,10 @@ class T01_leadController extends Controller
     public function listStatusLeads()
     {
         $name_bd = session('name_bd');
+        $host = getenv('HOST_DB');
         Config::set('database.connections.bdcnxtemp', array(
             'driver'    => 'mysql',
-            'host'      => 'localhost',
+            'host'      => $host,
             'database'  => $name_bd,
             'username'  => 'crm_zwinny',
             'password'  => '2018gdl',
@@ -533,9 +543,10 @@ class T01_leadController extends Controller
     public function listSourcesLeads()
     {
         $name_bd = session('name_bd');
+        $host = getenv('HOST_DB');
         Config::set('database.connections.bdcnxtemp', array(
             'driver'    => 'mysql',
-            'host'      => 'localhost',
+            'host'      => $host,
             'database'  => $name_bd,
             'username'  => 'crm_zwinny',
             'password'  => '2018gdl',
