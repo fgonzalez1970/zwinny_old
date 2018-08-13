@@ -55,7 +55,11 @@ class T02_contactController extends Controller
         //DB::setDefaultConnection('tenant2');
         $contacts = T02_contact::paginate();
         //dd($leads);
-        return view('t02_contacts.index', compact('contacts', 'listUsers'));
+        $counts[0] = count($contacts);
+        $counts[1] = T02_contact::where('id_status', 1)->count();
+        $counts[2] = T02_contact::where('id_status', 2)->count();
+        $counts[3] = T02_contact::where('id_status', 3)->count();
+        return view('t02_contacts.index', compact('contacts', 'listUsers','counts'));
     }
 
     /**
