@@ -59,9 +59,10 @@ class T02_contact extends Model
     function countContacts(){
 
       $name_bd = session('name_bd');
-      Config::set('database.connections.bdcnxtemp', array(
+      $host = getenv('HOST_DB');
+        Config::set('database.connections.bdcnxtemp', array(
             'driver'    => 'mysql',
-            'host'      => 'localhost',
+            'host'      => $host,
             'database'  => $name_bd,
             'username'  => 'crm_zwinny',
             'password'  => '2018gdl',

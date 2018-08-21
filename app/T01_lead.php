@@ -22,9 +22,11 @@ class T01_lead extends Model
     function syncLeadsToUssers($array_users){
 
     	$name_bd = session('name_bd');
-    	Config::set('database.connections.bdcnxtemp', array(
+    	
+      $host = getenv('HOST_DB');
+        Config::set('database.connections.bdcnxtemp', array(
             'driver'    => 'mysql',
-            'host'      => 'localhost',
+            'host'      => $host,
             'database'  => $name_bd,
             'username'  => 'crm_zwinny',
             'password'  => '2018gdl',
@@ -53,9 +55,10 @@ class T01_lead extends Model
     function deleteLeadsToUssers(){
 
     	$name_bd = session('name_bd');
-    	Config::set('database.connections.bdcnxtemp', array(
+    	$host = getenv('HOST_DB');
+        Config::set('database.connections.bdcnxtemp', array(
             'driver'    => 'mysql',
-            'host'      => 'localhost',
+            'host'      => $host,
             'database'  => $name_bd,
             'username'  => 'crm_zwinny',
             'password'  => '2018gdl',
@@ -105,9 +108,10 @@ class T01_lead extends Model
     function countLeads(){
 
       $name_bd = session('name_bd');
-      Config::set('database.connections.bdcnxtemp', array(
+      $host = getenv('HOST_DB');
+        Config::set('database.connections.bdcnxtemp', array(
             'driver'    => 'mysql',
-            'host'      => 'localhost',
+            'host'      => $host,
             'database'  => $name_bd,
             'username'  => 'crm_zwinny',
             'password'  => '2018gdl',
