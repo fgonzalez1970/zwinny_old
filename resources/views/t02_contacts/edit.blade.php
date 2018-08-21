@@ -84,7 +84,7 @@
                       <div class="col-lg-4">
                           <select class="form-control select_box" id="id_result" name="id_result" style="width: 100%">
                             <option value="">- Seleccione -</option>
-                            @foreach ($listResult as $result)
+                            @foreach ($listResults as $result)
                                 <option value="{{$result->id}}" <?php if ($contact->id_result==$result->id) echo 'selected'; ?>>{{$result->name}}</option>
                             @endforeach      
                           </select>
@@ -160,6 +160,9 @@
 					</div>
 					<!-- /.box-body -->
           <div class="box-footer" align="right">
+              <button type="submit" class="btn btn-primary create">
+                  <span class='glyphicon glyphicon-check'></span> {{trans('adminlte_lang::message.savebtn')}}
+              </button>&nbsp;&nbsp;
               <a href="{{url()->previous()}}" class="btn btn-warning btn-md pull-right"> {{ trans('adminlte_lang::message.back') }}</a>
           </div>
           </form>

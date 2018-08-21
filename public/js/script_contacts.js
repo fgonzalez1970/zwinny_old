@@ -77,12 +77,12 @@
     $("#id_status").change(function() {
 
         var id = $("#id_status option:selected").val()
-        alert(id);
+        //alert(id);
         
         //buscamos la lista de resultados 
             $.ajax({
                 type: 'GET',
-                url: 'listResults/'+id,
+                url: '/contacts/listResults/'+id,
                 success: function(data) {
                     //alert("success");
                     console.log(data);

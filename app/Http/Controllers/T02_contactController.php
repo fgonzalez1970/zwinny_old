@@ -214,8 +214,10 @@ class T02_contactController extends Controller
         $listSources = T02m11_sourcescontact::all();
         $listStatus = T02m12_statuscontact::all();
         $listLeads = T01_lead::where('flag_owner','0')->get();
-        
-        return view('t02_contacts.edit', compact('contact', 'listStatus','listSources','listLeads', 'user'));
+        //buscamos los results según el status que trae el contacto
+        $listResults = $this->listResults2($contact->id_status);
+        //dd($listResults);
+        return view('t02_contacts.edit', compact('contact', 'listStatus','listSources','listLeads', 'user', 'listResults'));
     }
 
     /**
@@ -296,6 +298,36 @@ class T02_contactController extends Controller
                ->get();
         //dd($listResults);
         return response()->json($listResults);
+    }
+
+    /**
+     * Display the specified resource: list of result for an status
+     *
+     * @param  \App\Tenant  $tenant
+     * @return \Illuminate\Http\Response
+     */
+    public function listResults2($id)
+    {
+        $name_bd = session('name_bd');
+        //dd($name_bd);
+        $host = getenv('HOST_DB');
+        Config::set('database.connections.bdcnxtemp', array(
+            'driver'    => 'mysql',
+            'host'      => $host,
+            'database'  => $name_bd,
+            'username'  => 'crm_zwinny',
+            'password'  => '2018gdl',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+        ));
+
+        DB::setDefaultConnection('bdcnxtemp');
+        $listResults = T02m13_resultscontact::where('id_statuscont','=',$id)
+        ->orderBy('name', 'asc')
+               ->get();
+        //dd($listResults);
+        return $listResults;
     }
 
     public function import(Request $request)
