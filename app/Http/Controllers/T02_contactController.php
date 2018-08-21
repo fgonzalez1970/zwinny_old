@@ -117,7 +117,7 @@ class T02_contactController extends Controller
         $data = $request->all();
         $input = Input::all();
         //$validator = Validator::make(Input::all(), $this->rules);
-        //dd("pasé");
+        //dd($data);
         $name_bd = session('name_bd');
         //dd($name_bd);
         $contact = new T02_contact;
@@ -136,7 +136,7 @@ class T02_contactController extends Controller
         DB::setDefaultConnection('bdcnxtemp');
         $contact->setConnection('bdcnxtemp');
         //dd($request->flag_prog);
-        $contact = T02_contact::create($request->all());
+        $contact = T02_contact::create($data);
         
         return redirect()->route('t02_contacts.index')->with('success','Registro creado satisfactoriamente');
     }
@@ -291,10 +291,124 @@ class T02_contactController extends Controller
         ));
 
         DB::setDefaultConnection('bdcnxtemp');
-        $listResults = T02m13_resultscontact::where('id_statuscont',$id)
+        $listResults = T02m13_resultscontact::where('id_statuscont','=',$id)
         ->orderBy('name', 'asc')
                ->get();
-
+        //dd($listResults);
         return response()->json($listResults);
+    }
+
+    public function import(Request $request)
+    {
+        $name_bd = session('name_bd');
+        $host = getenv('HOST_DB');
+        Config::set('database.connections.bdcnxtemp', array(
+            'driver'    => 'mysql',
+            'host'      => $host,
+            'database'  => $name_bd,
+            'username'  => 'crm_zwinny',
+            'password'  => '2018gdl',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+        ));
+
+        DB::setDefaultConnection('bdcnxtemp');
+        $contObj = new T02_contact;
+        $contObj->setConnection('bdcnxtemp');
+        $data = $request->all();
+        $input = Input::all();
+        $filename = $_FILES['file_import']['name'];
+        $uploadedFile = '';
+        $id_way = $_POST['id_way'];
+        $id_status = $_POST['id_status'];
+        $id_result = $_POST['id_result'];      
+        $id_source = $_POST['id_source'];
+        $flag_prog = $_POST['flag_prog'];
+
+        if(isset($_FILES['file_import']['name'])) {
+            //return Response::json($filename);
+            $arr_file = explode('.', $_FILES['file_import']['name']);
+            $extension = end($arr_file);
+            if('csv' == $extension) {
+                $reader = new Csv();
+            } else {
+                $reader = new Xlsx();
+            }
+            $spreadsheet = $reader->load($_FILES['file_import']['tmp_name']);
+
+            $sheetData = $spreadsheet->getActiveSheet()->toArray();
+            //iniciamos transacción para ver que no ocurre ningún error en la insersión
+            DB::beginTransaction();
+            try {
+                //recorremos las filas
+                for ($i=1;$i<count($sheetData);$i++){
+                //colocamos cada registro en un arreglo
+                $lead = [
+                    'subject' => $sheetData[$i][0],
+                    'name_lead' => $sheetData[$i][1],
+                    'lastname_lead' => $sheetData[$i][2],
+                    'email_lead'    => $sheetData[$i][3],
+                    'birthdate_lead' => $sheetData[$i][4],
+                    'company'       => $sheetData[$i][5],
+                    'rfc'           => $sheetData[$i][6],
+                    'contact_lead'  => $sheetData[$i][7],
+                    'phone_fix'     => $sheetData[$i][8],
+                    'phone_mobile'  => $sheetData[$i][9],
+                    'address_txt'   => $sheetData[$i][10],
+                    'country'       => $sheetData[$i][11],
+                    'state'         => $sheetData[$i][12],
+                    'city'          => $sheetData[$i][13],
+                    'obs_lead'      => $sheetData[$i][14],
+                    'facebook'      => $sheetData[$i][15],
+                    'twitter'       => $sheetData[$i][16], 
+                    'instagram'     => $sheetData[$i][17],
+                    'skype'         => $sheetData[$i][18],
+                    'id_status'     => $id_status,
+                    'id_source'     => $id_source,
+                    'flag_owner'     => $flag_owner,
+                    ];
+
+                    //insertamos el registro en la bd
+                    $result = T01_lead::insert($lead); 
+                }//for
+                
+                DB::commit();
+                $success = true;
+            } catch (\Exception $e) {
+                $success = false;
+                $error = $e->getMessage();
+                DB::rollback();
+                return Response::json(array('errors' => [$error]));
+            }
+
+            if ($success) {
+                $mensaje="Importación realizada con éxito";
+                return response()->json(array('mnsj' => ['Archivo importado con éxito.']));
+            } 
+            //print_r($sheetData);
+        }//if file
+            
+    }//function import
+
+    public function showWayName($idWay)
+    {
+        if ($idWay=='1')
+            $way = 'Entrante';
+        else
+            $way = 'Saliente';
+        return $way;
+    }
+
+    public function showSourceName($idSource)
+    {
+        $source = T02m11_sourcescontact::findOrFail($idSource)->name;
+        return $source;
+    }
+
+    public function showStatusName($idStatus)
+    {
+        $status = T02m12_statuscontact::findOrFail($idStatus)->name;
+        return $status;
     }
 }

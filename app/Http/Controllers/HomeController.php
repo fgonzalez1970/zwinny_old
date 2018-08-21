@@ -13,7 +13,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Caffeinated\Shinobi\Traits\ShinobiTrait;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
 use App\Tenant;
+use App\User;
+use App\T01_lead;
+use App\T02_contact;
 
 /**
  * Class HomeController
@@ -21,6 +26,11 @@ use App\Tenant;
  */
 class HomeController extends Controller
 {
+    protected $rules =
+    [
+        'login' => 'bail',
+    ];
+
     /**
      * Create a new controller instance.
      *
@@ -40,6 +50,7 @@ class HomeController extends Controller
     {
           //validamos si el usuario viene de ser registrado y hay que setear su bd
         $user = Auth::user();
+        $datos = array();
         //el nombre de la bd está formado por zwinny_ + el id del tenant al que pertenece
         $name_db = "zwinny_".$user->tenant_id;
         $tenant = Tenant::find($user->tenant_id);
@@ -53,12 +64,37 @@ class HomeController extends Controller
         if ($user->isRole('admin-zwinny')) {
             //Administrador General Zwinny, va a la bd general
             session(['name_bd' => 'crm_zwinny']);
+            $datos[0] = Tenant::all()->count(); 
+            $datos[1] = User::all()->count();
+            $users = User::latest()
+                    ->take(5)
+                    ->get(); 
+            $tenants = Tenant::latest()
+                    ->take(5)
+                    ->get(); 
             //dd('if');
-            return view('adminlte::home');
+            return view('adminlte::home', compact('datos','users', 'tenants'));
         } else {
-
+            $tenant = Tenant::findOrFail($user->tenant_id);
             if ($user->tenant_id!=NULL){
                 //dd('if else');
+                //validamos los parámetros del tenant sobre fecha de activación si es usuario aún es demo
+                //if ($tenant->id_status=='1'){
+                  //$hoy = date('Y-m-d H:i');
+                  //if ($hoy>$tenant->date_end){
+                    //lo deslogueamos con mensaje
+                    //dd($tenant->date_start.'- expiró');
+                    //Auth::logout();
+                    //Session::flush();
+                    //$validator = Validator::make(Input::all(), $this->rules);
+                    //$validator->errors()->add('interno', 'Su período de prueba ha expirado!');
+                    //Input::flash();
+                    //return view('expira')->withErrors($validator->errors());
+                    //return view('welcome')->with('msg', 'Su período de prueba ha finalizado!');
+                //return view('welcome')->withErrors('msg', 'Su período de prueba ha finalizado!');
+                    //return view('adminlte::layouts.landing');
+                  //}
+                //}
                 session(['name_bd' => $name_db]);
                 $user->selectSchemaTnt($name_db);
             } else {
@@ -66,7 +102,7 @@ class HomeController extends Controller
                 $today = date('Y-m-d');
                 $nuevafecha = strtotime ( '+1 month' , strtotime ( $today ) ) ;
                 $nuevafecha = date ( 'Y-m-d' , $nuevafecha );
-                $tenant = Tenant::create(['name'=>$user->name,'num_users'=>1, 'date_start'=>$today, 'date_end'=>$nuevafecha]);
+                $tenant = Tenant::create(['name'=>$user->name,'num_users'=>2, 'date_start'=>$today, 'date_end'=>$nuevafecha]);
                 $name_db = "zwinny_".$tenant->id;
                 $tenant->name_bd = $name_db;
                 $tenant->save();
@@ -78,8 +114,20 @@ class HomeController extends Controller
                 
                 //creamos la bd para este usuario
                 $user->createSchema($name_db,$user->id);
+                session(['name_bd' => $name_db]);
             }
-            return view('adminlte::home');
+            $lead = new T01_lead;
+            $contact = new T02_contact;
+            $datos[0] = $lead->countLeads(); 
+            $datos[1] = $contact->countContacts();
+            $leads = T01_lead::latest()
+                    ->take(5)
+                    ->get(); 
+            $contacts = T02_contact::latest()
+                    ->take(5)
+                    ->get(); 
+            //dd($datos);
+            return view('adminlte::home2', compact('datos','leads','contacts'));
         }//else
     }
 }

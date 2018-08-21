@@ -148,7 +148,24 @@ $tenantControl = new TenantController; ?>
                           <p class="errorIdStatus text-center alert alert-danger hidden"></p>
     									</div>
   									</div><br/>
-								
+								    <div class="form-group">
+                        <label class="control-label col-sm-4" for="name">{{trans('adminlte_lang::message.modules')}}:</label>
+                        <div class="col-sm-8">
+                          
+                          <div class="checkbox c-checkbox">
+                              <input type="checkbox" value="1" name="flag_cms">{{ trans('adminlte_lang::message.moduleCms')  }} 
+                          </div>
+                          <div class="checkbox c-checkbox">
+                              <input type="checkbox" value="1" name="flag_enc">{{ trans('adminlte_lang::message.moduleEnc')  }} 
+                          </div>
+                          <div class="checkbox c-checkbox">
+                              <input type="checkbox" value="1" name="flag_mail">{{ trans('adminlte_lang::message.moduleMail')  }} 
+                          </div>
+                          <div class="checkbox c-checkbox">
+                              <input type="checkbox" value="1" name="flag_leal">{{ trans('adminlte_lang::message.moduleLeal')  }} 
+                          </div>
+                        </div>
+                    </div><br/>
               </table>
 						</div>
 					</div>

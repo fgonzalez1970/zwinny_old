@@ -3,6 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Session;
 use App\T02m11_sourcescontact;
 use App\T02m12_statuscontact;
 use App\T02m13_resultscontact;
@@ -15,7 +18,7 @@ class T02_contact extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'subject', 'date','id_way','id_source','id_status', 'id_result','duration_hr','duration_seg','time_ini', 'time_fin','id_lead','desc_contact',  'action', 'id_user',
+        'id', 'subject', 'date', 'flag_prog','id_way','id_source','id_status', 'id_result','duration_hr','duration_seg','time_ini', 'time_fin','id_lead','desc_contact',  'action', 'id_user',
     ];
 
     public function showWayName()
@@ -52,5 +55,25 @@ class T02_contact extends Model
         $name = $lead->name_lead." ".$lead->lastname_lead;
         return $name;
     }
+
+    function countContacts(){
+
+      $name_bd = session('name_bd');
+      Config::set('database.connections.bdcnxtemp', array(
+            'driver'    => 'mysql',
+            'host'      => 'localhost',
+            'database'  => $name_bd,
+            'username'  => 'crm_zwinny',
+            'password'  => '2018gdl',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+        ));
+
+        DB::setDefaultConnection('bdcnxtemp');
+        $this->setConnection('bdcnxtemp');
+        $cuenta = $this->all()->count();
+        return $cuenta;
+    }//function
 
   }

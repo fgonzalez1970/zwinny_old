@@ -99,8 +99,11 @@ $contactControl = new T02_ContactController; ?>
 									@foreach($contacts as $contact)
 										<tr class="item{{$contact->id}}">
 											<td>{{ $contact->id }}</td>
-											<td>{{ $contact->flag_prog }}</td>
-											<td>{{ $contact->date }}</td>
+											<td><input type="checkbox" id="md_checkbox_30" class="filled-in chk-col-green" <?php if ($contact->flag_prog=='1') echo 'checked'; ?> disabled/>
+</td>
+											<td>@if ($contact->date!=NULL) 
+												{{ date('d/m/Y', strtotime($contact->date)) }}
+											@endif</td>
 											<td>{{ $contact->subject }}</td>
 											<td>{{ $contact->showWayName($contact->id_way) }}</td>
 											<td>{{ $contact->showSourceName($contact->id_source) }}</td>

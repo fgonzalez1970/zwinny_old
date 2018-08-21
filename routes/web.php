@@ -20,8 +20,8 @@ Route::get('/verif_ext/{email}/{clave}', 'UserController@verificaClaveExterna'
 
 Route::group(['middleware' => 'auth'], function () {
     //    Route::get('/link1', function ()    {
-//        // Uses Auth Middleware
-//    });
+	//        // Uses Auth Middleware
+	//    });
 
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes
@@ -59,7 +59,21 @@ Route::group(['middleware' => 'auth'], function () {
 		->middleware('has.permission:users.show');
 	Route::get('users/{user}/del', 'UserController@destroy')->name('users.destroy')->middleware('has.permission:users.destroy');
 	
-	
+	//Users en Tenants
+	Route::get('users_ten', 'UserController@indexTenant')->name('users_ten.index')
+		->middleware('has.permission:users.tenant.index');
+	Route::get('users_ten/create', 'UserController@createTenant')->name('users_ten.create')
+		->middleware('has.permission:users.tenant.create');
+	Route::post('users_ten', 'UserController@storeTenant')->name('users_ten.store')
+		->middleware('has.permission:users.tenant.create');
+	Route::get('users_ten/{user}/edit', 'UserController@editTenant')->name('users_ten.edit')
+		->middleware('has.permission:users.tenant.edit');
+	Route::post('users_ten/{user}', 'UserController@updateTenant')->name('users_ten.update')
+		->middleware('has.permission:users.tenant.edit');
+	Route::get('users_ten/{user}', 'UserController@showTenant')->name('users_ten.show')
+		->middleware('has.permission:users.tenant.show');
+	Route::get('users_ten/{user}/del', 'UserController@destroyTenant')->name('users_ten.destroy')->middleware('has.permission:users.tenant.destroy');
+
 	//Tenants
 	Route::get('tenants', 'TenantController@index')->name('tenants.index')
 		->middleware('has.permission:tenants.index');

@@ -12,7 +12,7 @@ class Tenant extends Model
 
     //
     protected $fillable = [
-        'name','contact','name_bd','id_status','num_users', 'num_contract','logo_file','logo_txt','date_start','date_end','created_at','updated_at',
+        'name','contact','name_bd','id_status','num_users', 'num_contract','logo_file','logo_txt','date_start','date_end','flag_crm', 'flag_cms', 'flag_enc', 'flag_mail', 'flag_leal','created_at','updated_at',
     ];
 
     function configureConnectionByName($tenantName)

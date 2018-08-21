@@ -147,6 +147,25 @@ $tenantControl = new TenantController; ?>
                           <p class="errorIdStatus text-center alert alert-danger hidden"></p>
     									</div>
   									</div><br/>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="name">{{trans('adminlte_lang::message.modules')}}:</label>
+                        <div class="col-sm-8">
+                          
+                          <div class="checkbox c-checkbox">
+                              <input type="checkbox" value="{{ $tenant->flag_cms }}" name="flag_cms" <?php if ($tenant->flag_cms) echo "checked" ?>>{{ trans('adminlte_lang::message.moduleCms')  }} 
+                          </div>
+                          <div class="checkbox c-checkbox">
+                              <input type="checkbox" value="{{ $tenant->flag_enc }}" name="flag_enc" <?php if ($tenant->flag_enc) echo "checked" ?>>{{ trans('adminlte_lang::message.moduleEnc')  }} 
+                          </div>
+                          <div class="checkbox c-checkbox">
+                              <input type="checkbox" value="{{ $tenant->flag_mail }}" name="flag_mail" <?php if ($tenant->flag_mail) echo "checked" ?>>{{ trans('adminlte_lang::message.moduleMail')  }} 
+                          </div>
+                          <div class="checkbox c-checkbox">
+                              <input type="checkbox" value="{{ $tenant->flag_leal }}" name="flag_leal" <?php if ($tenant->flag_leal) echo "checked" ?>>{{ trans('adminlte_lang::message.moduleLeal')  }} 
+                          </div>
+
+                        </div>
+                    </div><br/>
 							</table>
 						</div>
 					</div>

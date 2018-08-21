@@ -6,7 +6,7 @@
         //solicitar la lista de los sources para elegir
             $.ajax({
                 type: 'GET',
-                url: 'leads/listSources/list',
+                url: 'contacts/listSources/list',
                 success: function(data) {
                     console.log(data);
                     // Guardamos el select de los sources
@@ -22,7 +22,7 @@
         //solicitar la lista de los status para elegir
             $.ajax({
                 type: 'GET',
-                url: 'leads/listStatus/list',
+                url: 'contacts/listStatus/list',
                 success: function(data) {
                     //console.log(data);
                     // Guardamos el select de los status
@@ -35,7 +35,7 @@
                     })
                 }
             });
-        $('.modal-title').text('Importar Prospectos');
+        $('.modal-title').text('Importar Actividades');
         $('#importModal').modal('show');
     });
 
@@ -49,7 +49,7 @@
         //alert("hasta aquí");
         //return false;
         $.ajax({
-                url: 'leads/import/excel',
+                url: 'contacts/import/excel',
                 type: "post",
                 dataType: "html",
                 data: formData,
@@ -76,16 +76,16 @@
      //llenar el campo result según el status seleccionado
     $("#id_status").change(function() {
 
-        var id_status = $("#id_status option:selected").val()
-        //alert(id_status);
+        var id = $("#id_status option:selected").val()
+        alert(id);
         
         //buscamos la lista de resultados 
             $.ajax({
                 type: 'GET',
-                url: 'listResults/'+id_status,
+                url: 'listResults/'+id,
                 success: function(data) {
                     //alert("success");
-                    //console.log(data);
+                    console.log(data);
                     // Guardamos el select de los result
                     var resultList = $("#id_result");
                     // Limpiamos el select
@@ -96,7 +96,6 @@
                         txt_append = '<option value="' + v.id + '">' + v.name + '</option>';
                         resultList.append(txt_append);
                     })
-                    return false;
                 }
             });
     });

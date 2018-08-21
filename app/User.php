@@ -166,7 +166,7 @@ class User extends Authenticatable
         //llenamos la tabla status de prospecto
         DB::statement("INSERT INTO `t01m10_statusleads` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
     (1, 'Nueva Oportunidad', 'Ingresado en BD', '2018-06-10 12:22:24', '2018-06-10 12:22:26'),
-    (2, 'Contacto', 'Contactado', '2018-06-10 12:23:13', '2018-06-10 12:23:14'),
+    (2, 'Contactado', 'Contactado', '2018-06-10 12:23:13', '2018-06-10 12:23:14'),
     (3, 'Seguimiento', 'En seguimiento', '2018-06-10 12:23:39', '2018-06-10 12:23:40'),
     (4, 'Calificado', 'Paso a cliente', '2018-06-10 12:24:26', '2018-06-10 12:24:27'),
     (5, 'Cerrado', 'No aprovechable', '2018-06-10 12:25:23', '2018-06-10 12:25:23')");

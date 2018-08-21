@@ -3660,7 +3660,7 @@ input[type="color"] {
 }
 .panel-heading {
   position: relative;
-  padding: 0;
+  padding: 3;
   border-bottom: 1px solid transparent;
   border-top-right-radius: 0.214rem;
   border-top-left-radius: 0.214rem;

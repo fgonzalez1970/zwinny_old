@@ -102,5 +102,24 @@ class T01_lead extends Model
     		}
     }
 
+    function countLeads(){
+
+      $name_bd = session('name_bd');
+      Config::set('database.connections.bdcnxtemp', array(
+            'driver'    => 'mysql',
+            'host'      => 'localhost',
+            'database'  => $name_bd,
+            'username'  => 'crm_zwinny',
+            'password'  => '2018gdl',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+        ));
+
+        DB::setDefaultConnection('bdcnxtemp');
+        $this->setConnection('bdcnxtemp');
+        $cuenta = $this->all()->count();
+        return $cuenta;
+    }//function
     
 }//class

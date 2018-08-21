@@ -31,7 +31,7 @@
 
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu" data-widget="tree">
-            <li class="treeview">
+            <li>
                   <a href="{{ url('home') }}">
                     <i class="fa fa-dashboard"></i>{{ trans('adminlte_lang::message.dashboard') }}
                   </a>
@@ -40,22 +40,34 @@
             <!--<li class="header">Admin</li>-->
             <!-- Optionally, you can add icons to the links -->
             @if (Auth::user()->isRole('admin-zwinny'))
-            @can('tenants.index')
+                @can('tenants.index')
                 <li class="treeview">
-                    <a href="#"><i class='fa fa-users'></i> <span>Admin</span> <i class="fa fa-angle-left pull-right"></i></a> 
+                    <a href="#"><i class='fa fa-cogs'></i> <span>Admin & Config</span> <i class="fa fa-angle-left pull-right"></i></a> 
                     <ul class="treeview-menu">
                         @can('tenants.index') 
-                            <li><a href="{{ url('tenants') }}"><span>{{ trans('adminlte_lang::message.tenants') }}</span></a></li>
+                            <li><a href="{{ url('tenants') }}"><i class='fa fa-institution'></i><span>{{ trans('adminlte_lang::message.tenants') }}</span></a></li>  
                         @endcan
                         @can('roles.index')
-                            <li><a href="{{ url('roles') }}"><span>{{ trans('adminlte_lang::message.roles') }}</span></a></li>
+                            <li><a href="{{ url('roles') }}"><i class='fa fa-street-view'></i><span>{{ trans('adminlte_lang::message.roles') }}</span></a></li>
                         @endcan
                         @can('users.index')
-                            <li><a href="{{ url('users') }}"><span>{{ trans('adminlte_lang::message.users') }}</span></a></li>
+                            <li><a href="{{ url('users') }}"><i class='fa fa-user'></i><span>{{ trans('adminlte_lang::message.users') }}</span></a></li>
                         @endcan
                     </ul>
                 </li>
-            @endcan
+                @endcan
+            @endif
+            @if (Auth::user()->isRole('admin-gral'))
+                @can('users.tenant.index')
+                    <li class="treeview">
+                        <a href="#"><i class='fa fa-cogs'></i> <span>Admin & Config</span> <i class="fa fa-angle-left pull-right"></i></a> 
+                        <ul class="treeview-menu">
+                            @can('users.tenant.index')
+                            <li><a href="{{ url('users_ten') }}"><i class='fa fa-user'></i><span>{{ trans('adminlte_lang::message.users') }}</span></a></li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endcan
             @endif
             <li class="header">CRM</li>
             <!-- Optionally, you can add icons to the links -->
@@ -67,10 +79,10 @@
                     <ul class="treeview-menu">
                     
                         @can('t01_leads.index') 
-                            <li><a href="{{ url('leads') }}"><span>{{ trans('adminlte_lang::message.leads') }}</span></a></li>
+                            <li><a href="{{ url('leads') }}"><i class='fa fa-rocket'></i><span>{{ trans('adminlte_lang::message.leads') }}</span></a></li>
                         @endcan
                         @can('t02_contacts.index') 
-                            <li><a href="{{ url('contacts') }}"><span>{{ trans('adminlte_lang::message.activities') }}</span></a></li>
+                            <li><a href="{{ url('contacts') }}"><i class='fa fa-tty'></i><span>{{ trans('adminlte_lang::message.activities') }}</span></a></li>
 
                         @endcan
                     

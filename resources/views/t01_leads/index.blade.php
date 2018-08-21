@@ -44,7 +44,7 @@ $leadControl = new T01_LeadController; ?>
 								<div class="box box-inverse box-info">
 									<div class="box-body text-center">
 										<h1><?php echo $counts[0]; ?></h1>
-										<h6>Total Prospectos</h6>
+										<h6>{{ trans('adminlte_lang::message.totalleads') }}</h6>
 									</div>
 								</div>
 							</div>
@@ -53,7 +53,7 @@ $leadControl = new T01_LeadController; ?>
 								<div class="box box-success box-inverse">
 									<div class="box-body text-center">
 										<h1 class="font-light text-white"><h1><?php echo $counts[1]; ?></h1></h1>
-										<h6 class="text-white mb-10">Nueva Oportunidad</h6>
+										<h6 class="text-white mb-10">{{ trans('adminlte_lang::message.np_leads') }}</h6>
 									</div>
 								</div>
 							</div>

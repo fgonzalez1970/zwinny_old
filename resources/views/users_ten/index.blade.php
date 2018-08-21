@@ -14,7 +14,9 @@
 				<div class="box">
 					<div class="box-header with-border">
 						<h3 class="box-title">{{ trans('adminlte_lang::message.users') }}</h3>
-						<a href="{{ route('users.create') }}" class="btn btn-info btn-sm pull-right">+ {{ trans('adminlte_lang::message.create') }}</a>
+						@if (count($users)< $tenant->num_users)
+							<a href="{{ route('users_ten.create') }}" class="btn btn-info btn-sm pull-right">+ {{ trans('adminlte_lang::message.create') }}</a>
+						@endif
 					</div>
 					<div class="box-body">
 						@if ($message = Session::get('success'))
@@ -50,14 +52,14 @@
 												@if ($user->id==1)
 													&nbsp;
 												@else
-													@can('users.show')
-														<a href="{{ action('UserController@show', ['id' => $user->id]) }}" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="top" title="View"><span class="fa fa-list-alt"></span></a>
+													@can('users.tenant.show')
+														<a href="{{ action('UserController@showTenant', ['id' => $user->id]) }}" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="top" title="View"><span class="fa fa-list-alt"></span></a>
 													@endcan
-													@can('users.edit')
-													<a href="{{ action('UserController@edit', ['id' => $user->id]) }}" class="btn btn-primary btn-xs" title="Edit" data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil-square-o"></i></a>
+													@can('users.tenant.edit')
+													<a href="{{ action('UserController@editTenant', ['id' => $user->id]) }}" class="btn btn-primary btn-xs" title="Edit" data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil-square-o"></i></a>
 													@endcan
-													@can('users.delete')
-													<a href="{{ action('UserController@destroy', ['id' => $user->id]) }}" class="btn btn-danger btn-xs" title="Delete" data-toggle="tooltip" data-placement="top"><i class="fa fa-trash-o"></i></a>
+													@can('users.tenant.destroy')
+													<a href="{{ action('UserController@destroyTenant', ['id' => $user->id]) }}" class="btn btn-danger btn-xs" title="Delete" data-toggle="tooltip" data-placement="top"><i class="fa fa-trash-o"></i></a>
 													@endcan
 												@endif
 				                            </td> 
