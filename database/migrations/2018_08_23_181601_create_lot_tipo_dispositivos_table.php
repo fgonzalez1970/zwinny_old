@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStatustenantsTable extends Migration
+class CreateLotTipoDispositivosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateStatustenantsTable extends Migration
      */
     public function up()
     {
-        Schema::create('statustenants', function (Blueprint $table) {
+        Schema::create('lot_tipo_dispositivos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateStatustenantsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('statustenants');
+        Schema::dropIfExists('lot_tipo_dispositivos');
     }
 }

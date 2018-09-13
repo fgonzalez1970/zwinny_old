@@ -26,7 +26,7 @@ Route::group(['middleware' => 'auth'], function () {
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes
     
-	Route::get('home', 'HomeController@index');
+	Route::get('/home', 'HomeController@index')->name('home');
 
     //Roles
     Route::get('roles', 'RoleController@index')->name('roles.index')
@@ -88,7 +88,24 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('tenants/detStatus/{idstatus}', 'TenantController@showStatus')->name('tenants.showStatus')->middleware('has.permission:tenants.show');
 	Route::get('tenants/listStatus/{id}', 'TenantController@listStatus')->name('tenants.listStatus')->middleware('has.permission:tenants.show');
 
-	
+//Devices
+
+	Route::get('devices', 'Lot_dispositivoController@index')->name('devices.index')
+		->middleware('has.permission:devices.index');
+	Route::get('devices/create', 'Lot_dispositivoController@create')->name('devices.create')->middleware('has.permission:devices.create');
+	Route::post('devices/store', 'Lot_dispositivoController@store')->name('devices.store')
+		->middleware('has.permission:devices.create');
+	Route::get('devices/detail/{id}', 'Lot_dispositivoController@edit')->name('devices.edit')->middleware('has.permission:devices.edit');
+	Route::post('devices/{device}/edit', 'Lot_dispositivoController@update')->name('devices.update')->middleware('has.permission:devices/{device}/edit.edit');
+	Route::get('devices/{id}', 'Lot_dispositivoController@show')->name('devices.show')
+		->middleware('has.permission:devices.show');
+	Route::get('devices/{device}/delete', 'Lot_dispositivoController@destroy')->name('devices.destroy')->middleware('has.permission:devices.destroy');
+	Route::get('devices/detStatus/{idstatus}', 'Lot_dispositivoController@showStatus')->name('devices.showStatus')->middleware('has.permission:devices.show');
+	Route::get('devices/listSubtypes/{id}', 'Lot_dispositivoController@listSubtypes')->name('devices.listSubtypes')->middleware('has.permission:devices.show');
+	Route::get('/devices/export/excel', 'Lot_dispositivoController@export')->name('devices.export')
+		->middleware('has.permission:devices.export');
+	Route::post('/devices/import/excel', 'Lot_dispositivoController@import')->name('devices.import')
+		->middleware('has.permission:devices.import');
 
 	//Leads
 	Route::get('leads', 'T01_leadController@index')->name('t01_leads.index')

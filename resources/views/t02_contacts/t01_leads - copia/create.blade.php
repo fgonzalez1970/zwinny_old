@@ -58,7 +58,6 @@
                           <p class="errorIdSource text-center alert alert-danger hidden"></p>
                       </div>
                     </div><br/>
-                    <div>
                       <label class="control-label col-lg-2" for="id_branch">{{trans('adminlte_lang::message.branch')}}:</label>
                       <div class="col-lg-4">
                           <select class="form-control select_box" id="id_branch" name="id_branch" style="width: 100%" required>

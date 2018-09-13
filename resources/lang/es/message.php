@@ -158,5 +158,7 @@ return [
     'entity'        => 'Entity',
     'phone'         => 'Phone',
     'origin'         => 'Origin',
+    'devices'         => 'Dispositivos',
+    'assign'         => 'Asignaciones',
 
 ];

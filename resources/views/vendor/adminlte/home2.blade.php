@@ -128,7 +128,7 @@ $contactControl = new T02_contactController;
 								<tr>
 					  				<td>{{ $lead->id }}</td>
 									<td>{{ $lead->name_lead." ".$lead->lastname_lead }}</td>
-									<td>{{ $lead->email }}</td>
+									<td>{{ $lead->email_lead }}</td>
 									@if ($lead->id_status=='1')
 										<td><span class="badge bg-blue">{{ $leadControl->showStatusName($lead->id_status) }}</span></td>
 									@elseif ($lead->id_status=='2')

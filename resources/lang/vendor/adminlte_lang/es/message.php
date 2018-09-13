@@ -221,6 +221,8 @@ return [
     'state'       => 'Estado',
     'city'       => 'Ciudad',
     'import'       => 'Importar',
+    'importExcel'       => 'ImportarExcel',
+    'importKont'       => 'ImportarKont',
     'export'       => 'Exportar',
     'file'      => 'Archivo',
     'prospecting'   => 'Prospección',
@@ -253,6 +255,18 @@ return [
     'moduleEnc' => 'Módulo Encuestas',
     'moduleMail' => 'Módulo Mailing',
     'moduleLeal' => 'Módulo Lealtad',
-
+    'devices'         => 'Dispositivos',
+    'totaldevices'         => 'Total Dispositivos',
+    'createdevice'      => 'Crear Dispositivo',
+    'showdevice'      => 'Mostrar Dispositivo',
+    'editdevice'      => 'Editar Dispositivo',
+    'importdevice'      => 'Importar Dispositivos',
+    'exportdevice'      => 'Exportar Dispositivos',
+    'assigned'         => 'Asignados',
+    'assign'         => 'Asignaciones',
+    'tagkontakt'  => 'Tag KontaKt', 
+    'uuid'  => 'UUID',
+    'type'  => 'Tipo',
+    'subtype'  => 'Subtipo',
 
 ];

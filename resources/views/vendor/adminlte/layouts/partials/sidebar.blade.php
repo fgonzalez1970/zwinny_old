@@ -56,6 +56,19 @@
                     </ul>
                 </li>
                 @endcan
+                @can('devices.index')
+                <li class="treeview">
+                    <a href="#"><i class='fa fa-cogs'></i> <span>CMS Config</span> <i class="fa fa-angle-left pull-right"></i></a> 
+                    <ul class="treeview-menu">
+                        @can('devices.index') 
+                            <li><a href="{{ url('devices') }}"><i class='fa fa-podcast'></i><span>{{ trans('adminlte_lang::message.devices') }}</span></a></li>  
+                        @endcan
+                        @can('devices.assign')
+                            <li><a href="{{ url('devices/assign') }}"><i class='fa fa-share-alt'></i><span>{{ trans('adminlte_lang::message.assign') }}</span></a></li>
+                        @endcan
+                    </ul>
+                </li>
+                @endcan
             @endif
             @if (Auth::user()->isRole('admin-gral'))
                 @can('users.tenant.index')
@@ -69,11 +82,11 @@
                     </li>
                 @endcan
             @endif
-            <li class="header">CRM</li>
+            
             <!-- Optionally, you can add icons to the links -->
             @if (Auth::user()->isRole('admin-zwinny'))
-                        
             @else
+                <li class="header">CRM</li>
                 <li class="treeview">
                     <a href="#"><i class='fa fa-users'></i> <span>{{ trans('adminlte_lang::message.prospecting') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
