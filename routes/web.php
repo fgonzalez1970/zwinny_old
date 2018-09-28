@@ -96,16 +96,30 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('devices/store', 'Lot_dispositivoController@store')->name('devices.store')
 		->middleware('has.permission:devices.create');
 	Route::get('devices/detail/{id}', 'Lot_dispositivoController@edit')->name('devices.edit')->middleware('has.permission:devices.edit');
-	Route::post('devices/{device}/edit', 'Lot_dispositivoController@update')->name('devices.update')->middleware('has.permission:devices/{device}/edit.edit');
+	Route::post('devices/{device}/edit', 'Lot_dispositivoController@update')->name('devices.update')->middleware('has.permission:devices.edit');
 	Route::get('devices/{id}', 'Lot_dispositivoController@show')->name('devices.show')
 		->middleware('has.permission:devices.show');
 	Route::get('devices/{device}/delete', 'Lot_dispositivoController@destroy')->name('devices.destroy')->middleware('has.permission:devices.destroy');
 	Route::get('devices/detStatus/{idstatus}', 'Lot_dispositivoController@showStatus')->name('devices.showStatus')->middleware('has.permission:devices.show');
 	Route::get('devices/listSubtypes/{id}', 'Lot_dispositivoController@listSubtypes')->name('devices.listSubtypes')->middleware('has.permission:devices.show');
+	Route::get('devices/listDevices/{id}', 'Lot_dispositivoController@listDevicesNoAssign')->name('devices.listDevices')->middleware('has.permission:devices.show');
 	Route::get('/devices/export/excel', 'Lot_dispositivoController@export')->name('devices.export')
 		->middleware('has.permission:devices.export');
 	Route::post('/devices/import/excel', 'Lot_dispositivoController@import')->name('devices.import')
 		->middleware('has.permission:devices.import');
+
+	//Assignments
+
+	Route::get('assignements', 'Lot_dispositivos_tenantController@index')->name('assignements.index')
+		->middleware('has.permission:assignements.index');
+	Route::get('assignements/create', 'Lot_dispositivos_tenantController@create')->name('assignements.create')->middleware('has.permission:assignements.create');
+	Route::post('assignements/store', 'Lot_dispositivos_tenantController@store')->name('assignements.store')
+		->middleware('has.permission:assignements.create');
+	Route::get('assignements/detail/{id}', 'Lot_dispositivos_tenantController@edit')->name('assignements.edit')->middleware('has.permission:assignements.edit');
+	Route::post('assignements/{id}','Lot_dispositivos_tenantController@update')->name('assignements.update')
+		->middleware('has.permission:assignements.edit');
+	
+	Route::get('assignements/{assign}/delete', 'Lot_dispositivos_tenantController@destroy')->name('assignements.destroy')->middleware('has.permission:assignements.destroy');
 
 	//Leads
 	Route::get('leads', 'T01_leadController@index')->name('t01_leads.index')
@@ -130,6 +144,8 @@ Route::group(['middleware' => 'auth'], function () {
 		->middleware('has.permission:t01_leads.show');
 	Route::get('/leads/listSources/list', 'T01_leadController@listSourcesLeads')->name('t01_leads.listSources')
 		->middleware('has.permission:t01_leads.show');
+
+
 
 	//Contactos
 	Route::get('contacts', 'T02_contactController@index')->name('t02_contacts.index')

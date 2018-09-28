@@ -64,7 +64,7 @@
                             <li><a href="{{ url('devices') }}"><i class='fa fa-podcast'></i><span>{{ trans('adminlte_lang::message.devices') }}</span></a></li>  
                         @endcan
                         @can('devices.assign')
-                            <li><a href="{{ url('devices/assign') }}"><i class='fa fa-share-alt'></i><span>{{ trans('adminlte_lang::message.assign') }}</span></a></li>
+                            <li><a href="{{ url('assignements') }}"><i class='fa fa-share-alt'></i><span>{{ trans('adminlte_lang::message.assign') }}</span></a></li>
                         @endcan
                     </ul>
                 </li>

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Lot_dispositivo;
+use App\Tenant;
 use App\Lot_tipo_dispositivo;
 use App\Lot_subtipo_dispositivo;
 use App\Lot_dispositivos_tenant;
+use Illuminate\Support\Facades\DB;
 
 class Lot_dispositivoController extends Controller
 {
@@ -166,6 +168,41 @@ class Lot_dispositivoController extends Controller
         return response()->json($listSubtypes);
     }
 
+    /**
+     * Display the specified resource: list of devices for an subtype
+     *
+     * @param  $id_subtype
+     * @return \Illuminate\Http\Response
+     */
+    public function listDevices($id_subtype)
+    {
+        $listDevices = lot_dispositivo::where('id_subtipo','=',$id_subtype)
+        ->orderBy('name', 'asc')
+               ->get();
+        //dd($listResults);
+        return response()->json($listDevices);
+    }
+
+    /**
+     * Display the specified resource: list of devices for an subtype that are not assigned
+     *
+     * @param  $id_subtype
+     * @return \Illuminate\Http\Response
+     */
+    public function listDevicesNoAssign($id_subtype)
+    {
+        $hoy = date('Y-m-d');
+        //$listDevices = DB::select('select lot_dispositivos.* from lot_dispositivos left join lot_dispositivos_tenants ON lot_dispositivos.id = lot_dispositivos_tenants.id_tenant
+        //where lot_dispositivos_tenants.date_down<'.$hoy);
+        $listDevices = DB::select('select lot_dispositivos.* from lot_dispositivos where id not in (select id_dispositivo from lot_dispositivos_tenants where date_down>"'.$hoy.'")');
+        //dd($listDevices);
+        //$listDevices = lot_dispositivo::where('id_subtipo','=',$id_subtype)
+        //->orderBy('name', 'asc')
+          //     ->get();
+        //dd($listResults);
+        return response()->json($listDevices);
+    }
+
     public function showTypeName($id)
     {
         $type = Lot_tipo_dispositivo::findOrFail($id)->name;
@@ -177,6 +214,8 @@ class Lot_dispositivoController extends Controller
         $subtype = Lot_subtipo_dispositivo::findOrFail($id)->name;
         return $subtype;
     }
+
+    
 
     public function import(Request $request)
     {

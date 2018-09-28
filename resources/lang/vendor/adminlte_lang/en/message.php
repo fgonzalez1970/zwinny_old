@@ -257,6 +257,7 @@ return [
     'moduleMail' => 'Mailing Module',
     'moduleLeal' => 'Loyalty Module',
     'devices'         => 'Devices',
+    'device'         => 'Device',
     'totaldevices'         => 'Total Devices',
     'createdevice'      => 'Create Device',
     'showdevice'      => 'Show Device',
@@ -269,4 +270,9 @@ return [
     'uuid'  => 'UUID',
     'type'  => 'Type',
     'subtype'  => 'Subtype',
+    'assignActives'         => 'Active Assignements',
+    'assignInactives'         => 'Inactive Assignements',
+    'totalassign'         => 'Total Assignements',
+    'createassign'         => 'Device Assignement',
+    'editassign'         => 'Edit Device Assignement',
 ];
