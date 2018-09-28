@@ -68,7 +68,7 @@
                           <select class="form-control select_box" id="id_dispositivo" name="id_dispositivo" style="width: 100%" required>
                             <option value="">- Seleccione -</option>
                             @foreach ($listDevices as $devices2)
-                                <option value="{{$subtype->id}}" <?php if ($assign->id_dispositivo==$devices2->id) echo 'selected'; ?>>{{$devices2->name}}</option>
+                                <option value="{{$devices2->id}}" <?php if ($assign->id_dispositivo==$devices2->id) echo 'selected'; ?>>{{$devices2->name}}</option>
                               @endforeach 
                           </select>
                           <p class="errorIdDispo text-center alert alert-danger hidden"></p>
