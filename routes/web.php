@@ -102,7 +102,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('devices/{device}/delete', 'Iot_dispositivoController@destroy')->name('devices.destroy')->middleware('has.permission:devices.destroy');
 	Route::get('devices/detStatus/{idstatus}', 'Iot_dispositivoController@showStatus')->name('devices.showStatus')->middleware('has.permission:devices.show');
 	Route::get('devices/listSubtypes/{id}', 'Iot_dispositivoController@listSubtypes')->name('devices.listSubtypes')->middleware('has.permission:devices.show');
-	Route::get('devices/listDevices/{id}', 'Iot_dispositivoController@listDevicesNoAssign')->name('devices.listDevices')->middleware('has.permission:devices.show');
+	Route::get('devices/listDevicesNoAssign/{id}', 'Iot_dispositivoController@listDevicesNoAssign')->name('devices.listDevicesNoAssign')->middleware('has.permission:devices.show');
 	Route::get('/devices/export/excel', 'Iot_dispositivoController@export')->name('devices.export')
 		->middleware('has.permission:devices.export');
 	Route::post('/devices/import/excel', 'Iot_dispositivoController@import')->name('devices.import')

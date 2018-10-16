@@ -29,12 +29,12 @@
     $("#id_subtipo").change(function() {
 
         var id_subtipo = $("#id_subtipo option:selected").val()
-        //alert(id);
+        //alert(id_subtipo);
         
         //buscamos la lista de resultados 
             $.ajax({
                 type: 'GET',
-                url: '/devices/listDevices/'+id_subtipo,
+                url: '/devices/listDevicesNoAssign/'+id_subtipo,
                 success: function(data) {
                     //alert("success");
                     console.log(data);
