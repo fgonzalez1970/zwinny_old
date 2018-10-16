@@ -46,9 +46,10 @@ class Iot_dispositivos_tenantController extends Controller
     {
         //recuperamos el id del tenant según usuario logueado
         $user = Auth::user();
+        //dd($user->id_tenant);
         //traemos los devices asignados al id tenant del usuario
-        $devices_ten = Iot_dispositivos_tenant::where('id_tenant',$user->id_tenant)->paginate();
-        //dd($leads);
+        $devices_ten = Iot_dispositivos_tenant::where('id_tenant',$user->tenant_id)->paginate();
+        //dd($devices_ten);
         //traemos los count por status
         //$counts[0] = count($devices);
         $counts[0] = count($devices_ten);

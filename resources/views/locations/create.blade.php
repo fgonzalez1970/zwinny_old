@@ -24,8 +24,6 @@
            @if (count($errors) > 0)
            <div class="alert alert-danger">
             <strong>{{ trans('adminlte_lang::message.error') }}!</strong> {{ trans('adminlte_lang::message.errorlist') }}.<br>
-            <div class="alert alert-danger" id="mensaje">
-            >
             <br>
                 <ul>
                 @foreach ($errors->all() as $error)
@@ -34,7 +32,8 @@
                 </ul>
             </div>
             @endif
-            <span id="mensaje" class="alert alert-danger"></span>
+            <div id="mensaje">
+            </div>
           <form name="form_create_location" method="POST" action="{{ route('locations.store') }}" accept-charset="UTF-8" role="form">
 					<div class="box-body">
 						<div class="table-responsive">
@@ -130,7 +129,7 @@ window.onload = function () {
             infoWindow.open(map);
             map.setCenter(pos);
           }, function() {
-            alert("error");
+            //alert("error");
             handleLocationError(true, infoWindow, map.getCenter());
           });
         } else {
@@ -163,8 +162,7 @@ window.onload = function () {
           if (marker) {
             marker.setPosition(event.latLng)
           } else {
-
-            alert("mark");
+            //alert("mark");
             marker = new google.maps.Marker({
               position: event.latLng,
               map: map,

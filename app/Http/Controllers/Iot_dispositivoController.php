@@ -194,7 +194,7 @@ class Iot_dispositivoController extends Controller
         $hoy = date('Y-m-d');
         //$listDevices = DB::select('select Iot_dispositivos.* from Iot_dispositivos left join Iot_dispositivos_tenants ON Iot_dispositivos.id = Iot_dispositivos_tenants.id_tenant
         //where Iot_dispositivos_tenants.date_down<'.$hoy);
-        $listDevices = DB::select('select Iot_dispositivos.* from Iot_dispositivos where id not in (select id_dispositivo from Iot_dispositivos_tenants where date_down>"'.$hoy.'")');
+        $listDevices = DB::select('select iot_dispositivos.* from iot_dispositivos where id not in (select id_dispositivo from iot_dispositivos_tenants where date_down>"'.$hoy.'")');
         //dd($listDevices);
         //$listDevices = Iot_dispositivo::where('id_subtipo','=',$id_subtype)
         //->orderBy('name', 'asc')

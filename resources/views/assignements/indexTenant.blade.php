@@ -85,8 +85,8 @@ $deviceTenantControl = new Iot_dispositivos_tenantController; ?>
 												{{ date('d/m/Y', strtotime($dev_ten->date_down)) }}
 											@endif</td>
 											<td width="15%">
-												@can('locations_devices.show')
-												<a href="{{ action('Iot_locations_deviceController@show', ['id' => $dev_ten->id_device]) }}" class="btn btn-info btn-xs" title="View Location" data-toggle="tooltip" data-placement="top"><i class="fa fa-table"></i></a>
+												@can('locations.show')
+												<a href="{{ action('Iot_locations_deviceController@show', ['id' => $dev_ten->id_device]) }}" class="btn btn-info btn-xs" title="View Location" data-toggle="tooltip" data-placement="top"><i class="fa fa-map-marker"></i></a>
 												@endcan
 			                                </td>            
 										</tr>
