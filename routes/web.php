@@ -90,36 +90,38 @@ Route::group(['middleware' => 'auth'], function () {
 
 //Devices
 
-	Route::get('devices', 'Lot_dispositivoController@index')->name('devices.index')
+	Route::get('devices', 'Iot_dispositivoController@index')->name('devices.index')
 		->middleware('has.permission:devices.index');
-	Route::get('devices/create', 'Lot_dispositivoController@create')->name('devices.create')->middleware('has.permission:devices.create');
-	Route::post('devices/store', 'Lot_dispositivoController@store')->name('devices.store')
+	Route::get('devices/create', 'Iot_dispositivoController@create')->name('devices.create')->middleware('has.permission:devices.create');
+	Route::post('devices/store', 'Iot_dispositivoController@store')->name('devices.store')
 		->middleware('has.permission:devices.create');
-	Route::get('devices/detail/{id}', 'Lot_dispositivoController@edit')->name('devices.edit')->middleware('has.permission:devices.edit');
-	Route::post('devices/{device}/edit', 'Lot_dispositivoController@update')->name('devices.update')->middleware('has.permission:devices.edit');
-	Route::get('devices/{id}', 'Lot_dispositivoController@show')->name('devices.show')
+	Route::get('devices/detail/{id}', 'Iot_dispositivoController@edit')->name('devices.edit')->middleware('has.permission:devices.edit');
+	Route::post('devices/{device}/edit', 'Iot_dispositivoController@update')->name('devices.update')->middleware('has.permission:devices.edit');
+	Route::get('devices/{id}', 'Iot_dispositivoController@show')->name('devices.show')
 		->middleware('has.permission:devices.show');
-	Route::get('devices/{device}/delete', 'Lot_dispositivoController@destroy')->name('devices.destroy')->middleware('has.permission:devices.destroy');
-	Route::get('devices/detStatus/{idstatus}', 'Lot_dispositivoController@showStatus')->name('devices.showStatus')->middleware('has.permission:devices.show');
-	Route::get('devices/listSubtypes/{id}', 'Lot_dispositivoController@listSubtypes')->name('devices.listSubtypes')->middleware('has.permission:devices.show');
-	Route::get('devices/listDevices/{id}', 'Lot_dispositivoController@listDevicesNoAssign')->name('devices.listDevices')->middleware('has.permission:devices.show');
-	Route::get('/devices/export/excel', 'Lot_dispositivoController@export')->name('devices.export')
+	Route::get('devices/{device}/delete', 'Iot_dispositivoController@destroy')->name('devices.destroy')->middleware('has.permission:devices.destroy');
+	Route::get('devices/detStatus/{idstatus}', 'Iot_dispositivoController@showStatus')->name('devices.showStatus')->middleware('has.permission:devices.show');
+	Route::get('devices/listSubtypes/{id}', 'Iot_dispositivoController@listSubtypes')->name('devices.listSubtypes')->middleware('has.permission:devices.show');
+	Route::get('devices/listDevices/{id}', 'Iot_dispositivoController@listDevicesNoAssign')->name('devices.listDevices')->middleware('has.permission:devices.show');
+	Route::get('/devices/export/excel', 'Iot_dispositivoController@export')->name('devices.export')
 		->middleware('has.permission:devices.export');
-	Route::post('/devices/import/excel', 'Lot_dispositivoController@import')->name('devices.import')
+	Route::post('/devices/import/excel', 'Iot_dispositivoController@import')->name('devices.import')
 		->middleware('has.permission:devices.import');
+		
 
 	//Assignments
 
-	Route::get('assignements', 'Lot_dispositivos_tenantController@index')->name('assignements.index')
+	Route::get('assignements', 'Iot_dispositivos_tenantController@index')->name('assignements.index')
 		->middleware('has.permission:assignements.index');
-	Route::get('assignements/create', 'Lot_dispositivos_tenantController@create')->name('assignements.create')->middleware('has.permission:assignements.create');
-	Route::post('assignements/store', 'Lot_dispositivos_tenantController@store')->name('assignements.store')
+	Route::get('assignements/create', 'Iot_dispositivos_tenantController@create')->name('assignements.create')->middleware('has.permission:assignements.create');
+	Route::post('assignements/store', 'Iot_dispositivos_tenantController@store')->name('assignements.store')
 		->middleware('has.permission:assignements.create');
-	Route::get('assignements/detail/{id}', 'Lot_dispositivos_tenantController@edit')->name('assignements.edit')->middleware('has.permission:assignements.edit');
-	Route::post('assignements/{id}','Lot_dispositivos_tenantController@update')->name('assignements.update')
+	Route::get('assignements/detail/{id}', 'Iot_dispositivos_tenantController@edit')->name('assignements.edit')->middleware('has.permission:assignements.edit');
+	Route::post('assignements/{id}','Iot_dispositivos_tenantController@update')->name('assignements.update')
 		->middleware('has.permission:assignements.edit');
 	
-	Route::get('assignements/{assign}/delete', 'Lot_dispositivos_tenantController@destroy')->name('assignements.destroy')->middleware('has.permission:assignements.destroy');
+	Route::get('assignements/{assign}/delete', 'Iot_dispositivos_tenantController@destroy')->name('assignements.destroy')->middleware('has.permission:assignements.destroy');
+	Route::get('devicesTenant', 'Iot_dispositivos_tenantController@indexTenant')->name('devices.indexTenant')->middleware('has.permission:devices.index');
 
 	//Leads
 	Route::get('leads', 'T01_leadController@index')->name('t01_leads.index')
@@ -167,6 +169,29 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('contacts/import/excel', 'T02_contactController@import')->name('t02_contacts.import')
 		->middleware('has.permission:t02_contacts.import');
 	Route::get('contacts/listResults/{id}', 'T02_contactController@listResults')->name('t02_contacts.listResults')->middleware('has.permission:t02_contacts.show');
+
+	//Locations
+	Route::get('locations', 'Iot_locationController@index')->name('locations.index')
+		->middleware('has.permission:locations.index');
+	Route::get('locations/create', 'Iot_locationController@create')->name('locations.create')
+		->middleware('has.permission:locations.create');
+	Route::post('locations/store', 'Iot_locationController@store')->name('locations.store')
+		->middleware('has.permission:locations.create');
+	Route::get('locations/show/{id}', 'Iot_locationController@showDevices')->name('locations.showDevices')
+		->middleware('has.permission:locations.show');
+	
+	Route::get('locations/{contact}/edit', 'Iot_locationController@edit')->name('locations.edit')
+		->middleware('has.permission:locations.edit');	
+	Route::post('locations/{contact}', 'Iot_locationController@update')->name('locations.update')
+		->middleware('has.permission:locations.edit');
+	Route::get('locations/{contact}', 'Iot_locationController@show')->name('locations.show')
+		->middleware('has.permission:locations.show');
+	Route::delete('locations/{contact}', 'Iot_locationController@destroy')->name('locations.destroy')
+		->middleware('has.permission:locations.destroy');
+	Route::get('/locations/export/excel', 'Iot_locationController@export')->name('locations.export')
+		->middleware('has.permission:locations.export');
+	Route::post('/locations/import/excel', 'Iot_locationController@import')->name('locations.import')
+		->middleware('has.permission:locations.import');
 });
 
 

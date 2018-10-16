@@ -82,7 +82,7 @@
                       </div>
                       <label class="control-label col-lg-2" for="id_result">{{trans('adminlte_lang::message.result')}}:</label>
                       <div class="col-lg-4">
-                          <select class="form-control select_box" id="id_result" name="id_result" style="width: 100%">
+                          <select class="form-control select_box" id="id_result" name="id_result" style="width: 100%" required>
                             <option value="">- Seleccione -</option>    
                           </select>
                           <p class="errorIdSource text-center alert alert-danger hidden"></p>

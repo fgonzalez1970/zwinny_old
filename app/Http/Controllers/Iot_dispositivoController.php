@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Lot_dispositivo;
+use App\Iot_dispositivo;
 use App\Tenant;
-use App\Lot_tipo_dispositivo;
-use App\Lot_subtipo_dispositivo;
-use App\Lot_dispositivos_tenant;
+use App\Iot_tipo_dispositivo;
+use App\Iot_subtipo_dispositivo;
+use App\Iot_dispositivos_tenant;
 use Illuminate\Support\Facades\DB;
 
-class Lot_dispositivoController extends Controller
+class Iot_dispositivoController extends Controller
 {
     protected $rules =
     [
@@ -34,14 +34,14 @@ class Lot_dispositivoController extends Controller
      */
     public function index()
     {
-        $devices = Lot_dispositivo::paginate();
+        $devices = Iot_dispositivo::paginate();
         //dd($leads);
         //traemos los count por status
         $counts[0] = count($devices);
         //asignados
         $hoy = date('Y-m-d');
-        $counts[1] = Lot_dispositivos_tenant::where('date_down','>', $hoy)->count();
-        //$counts[1] = Lot_dispositivo::where('id_status', 1)->count();
+        $counts[1] = Iot_dispositivos_tenant::where('date_down','>', $hoy)->count();
+        //$counts[1] = Iot_dispositivo::where('id_status', 1)->count();
         
         
         return view('devices.index', compact('devices', 'counts'));
@@ -55,7 +55,7 @@ class Lot_dispositivoController extends Controller
     public function create()
     {
         //buscar los tipos de dispositivos
-        $listTypes = Lot_tipo_dispositivo::all();
+        $listTypes = Iot_tipo_dispositivo::all();
         return view('devices.create', compact('listTypes'));
 
     }
@@ -72,7 +72,7 @@ class Lot_dispositivoController extends Controller
         //$input = Input::all();
         //$validator = Validator::make(Input::all(), $this->rules);
        
-        $dispo = Lot_dispositivo::create($data);
+        $dispo = Iot_dispositivo::create($data);
         
         return redirect()->route('devices.index')->with('success','Registro creado satisfactoriamente');
     }
@@ -87,7 +87,7 @@ class Lot_dispositivoController extends Controller
     {
         
         //buscamos el dispositivo a editar
-        $device = Lot_dispositivo::findOrFail($id);
+        $device = Iot_dispositivo::findOrFail($id);
         
         return view('devices.show', compact('device'));
     }
@@ -101,11 +101,11 @@ class Lot_dispositivoController extends Controller
     public function edit($id)
     {
         //buscamos el dispositivo a editar
-        $device = Lot_dispositivo::findOrFail($id);
+        $device = Iot_dispositivo::findOrFail($id);
         //buscamos los tipos de disp
-        $listTypes = Lot_tipo_dispositivo::all();
+        $listTypes = Iot_tipo_dispositivo::all();
         //buscamos los subtipos de disp segun el id
-        $listSubtypes = Lot_subtipo_dispositivo::where('id_tipo','=',$device->id_tipo)
+        $listSubtypes = Iot_subtipo_dispositivo::where('id_tipo','=',$device->id_tipo)
         ->orderBy('name', 'asc')
                ->get();
         
@@ -125,7 +125,7 @@ class Lot_dispositivoController extends Controller
         
         
         //buscamos el dispositivo a editar
-        $device = Lot_dispositivo::findOrFail($id)->update($data);
+        $device = Iot_dispositivo::findOrFail($id)->update($data);
         
         return redirect()->route('devices.index')->with('success','Registro actualizado satisfactoriamente');
     }
@@ -138,9 +138,9 @@ class Lot_dispositivoController extends Controller
      */
     public function destroy($id)
     {
-        $device = Lot_dispositivo::findOrFail($id);
+        $device = Iot_dispositivo::findOrFail($id);
         //verificamos si está vigente en algún inquilino
-        $disp_tenants = Lot_dispositivos_tenant::where('id_dispositivo', $id)->get();
+        $disp_tenants = Iot_dispositivos_tenant::where('id_dispositivo', $id)->get();
         //$disp_tenants = $device->haveTenants()->get();
         //dd($disp_tenants);
         if (count($disp_tenants)>0){
@@ -161,7 +161,7 @@ class Lot_dispositivoController extends Controller
      */
     public function listSubtypes($id_type)
     {
-        $listSubtypes = lot_subtipo_dispositivo::where('id_tipo','=',$id_type)
+        $listSubtypes = Iot_subtipo_dispositivo::where('id_tipo','=',$id_type)
         ->orderBy('name', 'asc')
                ->get();
         //dd($listResults);
@@ -176,7 +176,7 @@ class Lot_dispositivoController extends Controller
      */
     public function listDevices($id_subtype)
     {
-        $listDevices = lot_dispositivo::where('id_subtipo','=',$id_subtype)
+        $listDevices = Iot_dispositivo::where('id_subtipo','=',$id_subtype)
         ->orderBy('name', 'asc')
                ->get();
         //dd($listResults);
@@ -192,11 +192,11 @@ class Lot_dispositivoController extends Controller
     public function listDevicesNoAssign($id_subtype)
     {
         $hoy = date('Y-m-d');
-        //$listDevices = DB::select('select lot_dispositivos.* from lot_dispositivos left join lot_dispositivos_tenants ON lot_dispositivos.id = lot_dispositivos_tenants.id_tenant
-        //where lot_dispositivos_tenants.date_down<'.$hoy);
-        $listDevices = DB::select('select lot_dispositivos.* from lot_dispositivos where id not in (select id_dispositivo from lot_dispositivos_tenants where date_down>"'.$hoy.'")');
+        //$listDevices = DB::select('select Iot_dispositivos.* from Iot_dispositivos left join Iot_dispositivos_tenants ON Iot_dispositivos.id = Iot_dispositivos_tenants.id_tenant
+        //where Iot_dispositivos_tenants.date_down<'.$hoy);
+        $listDevices = DB::select('select Iot_dispositivos.* from Iot_dispositivos where id not in (select id_dispositivo from Iot_dispositivos_tenants where date_down>"'.$hoy.'")');
         //dd($listDevices);
-        //$listDevices = lot_dispositivo::where('id_subtipo','=',$id_subtype)
+        //$listDevices = Iot_dispositivo::where('id_subtipo','=',$id_subtype)
         //->orderBy('name', 'asc')
           //     ->get();
         //dd($listResults);
@@ -205,13 +205,13 @@ class Lot_dispositivoController extends Controller
 
     public function showTypeName($id)
     {
-        $type = Lot_tipo_dispositivo::findOrFail($id)->name;
+        $type = Iot_tipo_dispositivo::findOrFail($id)->name;
         return $type;
     }
 
     public function showSubtypeName($id)
     {
-        $subtype = Lot_subtipo_dispositivo::findOrFail($id)->name;
+        $subtype = Iot_subtipo_dispositivo::findOrFail($id)->name;
         return $subtype;
     }
 
@@ -257,7 +257,7 @@ class Lot_dispositivoController extends Controller
                     ];
 
                     //insertamos el registro en la bd
-                    $result = Lot_dispositivo::insert($dispo); 
+                    $result = Iot_dispositivo::insert($dispo); 
                 }//for
                 
                 DB::commit();

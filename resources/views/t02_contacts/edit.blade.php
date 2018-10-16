@@ -82,7 +82,7 @@
                       </div>
                       <label class="control-label col-lg-2" for="id_result">{{trans('adminlte_lang::message.result')}}:</label>
                       <div class="col-lg-4">
-                          <select class="form-control select_box" id="id_result" name="id_result" style="width: 100%">
+                          <select class="form-control select_box" id="id_result" name="id_result" style="width: 100%" required>
                             <option value="">- Seleccione -</option>
                             @foreach ($listResults as $result)
                                 <option value="{{$result->id}}" <?php if ($contact->id_result==$result->id) echo 'selected'; ?>>{{$result->name}}</option>

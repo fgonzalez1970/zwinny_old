@@ -6,8 +6,8 @@
 
 <?php 
   $hoy = date('Y-m-d');
-  use App\Http\Controllers\Lot_dispositivoController; 
-  $deviceControl = new Lot_dispositivoController; 
+  use App\Http\Controllers\Iot_dispositivoController; 
+  $deviceControl = new Iot_dispositivoController; 
   $date_up = "";
   if ($device->date_up!="") $date_up = date('d/m/Y', strtotime($device->date_up));
   $date_down = "";

@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Lot_subtipo_dispositivo extends Model
+class Iot_locations_device extends Model
 {
     //
 }

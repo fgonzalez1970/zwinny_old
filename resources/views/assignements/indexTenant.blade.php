@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.assign') }}
+	{{ trans('adminlte_lang::message.devicesAssign') }}
 @endsection
 
 <?php use App\Http\Controllers\Iot_dispositivos_tenantController; 
@@ -15,7 +15,7 @@ $deviceTenantControl = new Iot_dispositivos_tenantController; ?>
 				<div class="box">
 
 					<div class="box-header with-border">
-						<h3 class="box-title">{{ trans('adminlte_lang::message.assign') }}</h3>
+						<h3 class="box-title">{{ trans('adminlte_lang::message.devicesAssign') }}</h3>
 							<button type="button" class="btn btn-primary btn-sm pull-right create"  onclick="location.href = '{{ route('assignements.create') }}'">
                   				<span class='glyphicon glyphicon-plus'></span> {{trans('adminlte_lang::message.create')}}
               				</button>&nbsp;&nbsp;
@@ -37,7 +37,7 @@ $deviceTenantControl = new Iot_dispositivos_tenantController; ?>
 								<div class="box box-inverse box-info">
 									<div class="box-body text-center">
 										<h1><?php echo $counts[0]; ?></h1>
-										<h6>{{ trans('adminlte_lang::message.totalassign') }}</h6>
+										<h6>{{ trans('adminlte_lang::message.totaldevices') }}</h6>
 									</div>
 								</div>
 							</div>
@@ -68,11 +68,9 @@ $deviceTenantControl = new Iot_dispositivos_tenantController; ?>
 									<tr>
 										<th>ID</th>
 										<th>{{ trans('adminlte_lang::message.device') }}</th>
-										<th>{{ trans('adminlte_lang::message.tenant') }}</th>
 										<th>{{ trans('adminlte_lang::message.dateAct') }}</th>
 										<th>{{ trans('adminlte_lang::message.dateSusp') }}</th>
 										<th>{{ trans('adminlte_lang::message.actions') }}</th>
-										
 									</tr>
 								</thead>
 								<tbody>
@@ -80,8 +78,6 @@ $deviceTenantControl = new Iot_dispositivos_tenantController; ?>
 										<tr class="item{{$dev_ten->id}}">
 											<td>{{ $dev_ten->id }}</td>
 											<td>{{ $deviceTenantControl->showDeviceName($dev_ten->id_dispositivo) }}</td>
-											<td>{{ $deviceTenantControl->showTenantName($dev_ten->id_tenant) }}</td>
-											
 											<td>@if ($dev_ten->date_up!=NULL) 
 												{{ date('d/m/Y', strtotime($dev_ten->date_up)) }}
 											@endif</td>
@@ -89,11 +85,8 @@ $deviceTenantControl = new Iot_dispositivos_tenantController; ?>
 												{{ date('d/m/Y', strtotime($dev_ten->date_down)) }}
 											@endif</td>
 											<td width="15%">
-												@can('assignements.edit')
-												<a href="{{ action('Iot_dispositivos_tenantController@edit', ['id' => $dev_ten->id]) }}" class="btn btn-primary btn-xs" title="Edit" data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil-square-o"></i></a>
-												@endcan
-												@can('assignements.destroy')
-												<a href="{{ action('Iot_dispositivos_tenantController@destroy', ['id' => $dev_ten->id]) }}" class="btn btn-danger btn-xs" title="Delete" data-toggle="tooltip" data-placement="top"><i class="fa fa-trash-o"></i></a>
+												@can('locations_devices.show')
+												<a href="{{ action('Iot_locations_deviceController@show', ['id' => $dev_ten->id_device]) }}" class="btn btn-info btn-xs" title="View Location" data-toggle="tooltip" data-placement="top"><i class="fa fa-table"></i></a>
 												@endcan
 			                                </td>            
 										</tr>

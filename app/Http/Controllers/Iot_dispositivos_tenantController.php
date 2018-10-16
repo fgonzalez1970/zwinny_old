@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Lot_dispositivos_tenant;
-use App\Lot_dispositivo;
-use App\Lot_tipo_dispositivo;
-use App\Lot_subtipo_dispositivo;
-
+use Illuminate\Support\Facades\Auth;
+use App\Iot_dispositivos_tenant;
+use App\Iot_dispositivo;
+use App\Iot_tipo_dispositivo;
+use App\Iot_subtipo_dispositivo;
+use App\User;
 use App\Tenant;
 
-class Lot_dispositivos_tenantController extends Controller
+class Iot_dispositivos_tenantController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,21 +20,48 @@ class Lot_dispositivos_tenantController extends Controller
      */
     public function index()
     {
-        $devices_ten = Lot_dispositivos_tenant::paginate();
+        $devices_ten = Iot_dispositivos_tenant::paginate();
         //dd($leads);
         //traemos los count por status
         //$counts[0] = count($devices);
         $counts[0] = count($devices_ten);
         //asignados activos
         $hoy = date('Y-m-d');
-        $counts[1] = Lot_dispositivos_tenant::where('date_down','>', $hoy)->count();
+        $counts[1] = Iot_dispositivos_tenant::where('date_down','>', $hoy)->count();
         //asignados inactivos
         $hoy = date('Y-m-d');
-        $counts[2] = Lot_dispositivos_tenant::where('date_down','<', $hoy)->count();
-        //$counts[1] = Lot_dispositivo::where('id_status', 1)->count();
+        $counts[2] = Iot_dispositivos_tenant::where('date_down','<', $hoy)->count();
+        //$counts[1] = Iot_dispositivo::where('id_status', 1)->count();
         
         
         return view('assignements.index', compact('devices_ten', 'counts'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexTenant()
+    {
+        //recuperamos el id del tenant según usuario logueado
+        $user = Auth::user();
+        //traemos los devices asignados al id tenant del usuario
+        $devices_ten = Iot_dispositivos_tenant::where('id_tenant',$user->id_tenant)->paginate();
+        //dd($leads);
+        //traemos los count por status
+        //$counts[0] = count($devices);
+        $counts[0] = count($devices_ten);
+        //asignados activos
+        $hoy = date('Y-m-d');
+        $counts[1] = Iot_dispositivos_tenant::where('id_tenant',$user->id_tenant)->where('date_down','>', $hoy)->count();
+        //asignados inactivos
+        $hoy = date('Y-m-d');
+        $counts[2] = Iot_dispositivos_tenant::where('id_tenant',$user->id_tenant)->where('date_down','<', $hoy)->count();
+        //$counts[1] = Iot_dispositivo::where('id_status', 1)->count();
+        
+        
+        return view('assignements.indexTenant', compact('devices_ten', 'counts'));
     }
 
     /**
@@ -44,7 +72,7 @@ class Lot_dispositivos_tenantController extends Controller
     public function create()
     {
         //buscar los tipos de dispositivos
-        $listTypes = Lot_tipo_dispositivo::all();
+        $listTypes = Iot_tipo_dispositivo::all();
         //buscar los inquilinos
         $tenants = Tenant::all();
         return view('assignements.create', compact('listTypes','tenants'));
@@ -62,7 +90,7 @@ class Lot_dispositivos_tenantController extends Controller
         //$input = Input::all();
         //$validator = Validator::make(Input::all(), $this->rules);
        
-        $dispo_ten = Lot_dispositivos_tenant::create($data);
+        $dispo_ten = Iot_dispositivos_tenant::create($data);
         
         return redirect()->route('assignements.index')->with('success','Registro creado satisfactoriamente');
     }
@@ -87,17 +115,17 @@ class Lot_dispositivos_tenantController extends Controller
     public function edit($id)
     {
         //buscamos el assignement a editar
-        $assign = Lot_dispositivos_tenant::findOrFail($id);
+        $assign = Iot_dispositivos_tenant::findOrFail($id);
         //buscamos el device asignado
-        $device = Lot_dispositivo::findOrFail($assign->id_dispositivo);
+        $device = Iot_dispositivo::findOrFail($assign->id_dispositivo);
         //buscamos los tipos de disp
-        $listTypes = Lot_tipo_dispositivo::all();
+        $listTypes = Iot_tipo_dispositivo::all();
         //buscamos los subtipos de disp segun el id
-        $listSubtypes = Lot_subtipo_dispositivo::where('id_tipo','=',$device->id_tipo)
+        $listSubtypes = Iot_subtipo_dispositivo::where('id_tipo','=',$device->id_tipo)
         ->orderBy('name', 'asc')
                ->get();
         //buscamos los devices según el subtipo
-        $listDevices = Lot_dispositivo::where('id_subtipo','=',$device->id_subtipo)
+        $listDevices = Iot_dispositivo::where('id_subtipo','=',$device->id_subtipo)
         ->orderBy('name', 'asc')
                ->get();
         //buscar los inquilinos
@@ -118,7 +146,7 @@ class Lot_dispositivos_tenantController extends Controller
         
         
         //buscamos la asignación a editar
-        $assign = Lot_dispositivos_tenant::findOrFail($id)->update($data);
+        $assign = Iot_dispositivos_tenant::findOrFail($id)->update($data);
         
         return redirect()->route('assignements.index')->with('success','Registro actualizado satisfactoriamente');
     }
@@ -131,7 +159,7 @@ class Lot_dispositivos_tenantController extends Controller
      */
     public function destroy($id)
     {
-        $assign = Lot_dispositivos_tenant::findOrFail($id);
+        $assign = Iot_dispositivos_tenant::findOrFail($id);
         //OJOOOO VALIDAR SI ESTÁ ASIGNADO A UNA LOCALIDAD?
         $assign->delete();
         return redirect()->route('assignements.index')->with('success','Registro eliminado satisfactoriamente');   
@@ -139,7 +167,7 @@ class Lot_dispositivos_tenantController extends Controller
 
     public function showDeviceName($id)
     {
-        $device = Lot_dispositivo::findOrFail($id)->name;
+        $device = Iot_dispositivo::findOrFail($id)->name;
         return $device;
     }
 

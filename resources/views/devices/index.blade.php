@@ -4,8 +4,8 @@
 	{{ trans('adminlte_lang::message.devices') }}
 @endsection
 
-<?php use App\Http\Controllers\Lot_dispositivoController; 
-$deviceControl = new Lot_dispositivoController; ?>
+<?php use App\Http\Controllers\Iot_dispositivoController; 
+$deviceControl = new Iot_dispositivoController; ?>
 
 @section('main-content')
 	{{-- @include('devices.partials.import')--}}
@@ -96,13 +96,13 @@ $deviceControl = new Lot_dispositivoController; ?>
 											@endif</td>
 											<td width="15%">
 												@can('devices.show')
-													<a href="{{ action('Lot_dispositivoController@show', ['id' => $device->id]) }}" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="top" title="View"><span class="fa fa-list-alt"></span></a>
+													<a href="{{ action('Iot_dispositivoController@show', ['id' => $device->id]) }}" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="top" title="View"><span class="fa fa-list-alt"></span></a>
 												@endcan
 												@can('devices.edit')
-												<a href="{{ action('Lot_dispositivoController@edit', ['id' => $device->id]) }}" class="btn btn-primary btn-xs" title="Edit" data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil-square-o"></i></a>
+												<a href="{{ action('Iot_dispositivoController@edit', ['id' => $device->id]) }}" class="btn btn-primary btn-xs" title="Edit" data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil-square-o"></i></a>
 												@endcan
 												@can('devices.destroy')
-												<a href="{{ action('Lot_dispositivoController@destroy', ['id' => $device->id]) }}" class="btn btn-danger btn-xs" title="Delete" data-toggle="tooltip" data-placement="top"><i class="fa fa-trash-o"></i></a>
+												<a href="{{ action('Iot_dispositivoController@destroy', ['id' => $device->id]) }}" class="btn btn-danger btn-xs" title="Delete" data-toggle="tooltip" data-placement="top"><i class="fa fa-trash-o"></i></a>
 												@endcan
 			                                </td>            
 										</tr>

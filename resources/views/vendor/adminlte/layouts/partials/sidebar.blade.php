@@ -101,6 +101,22 @@
                     
                     </ul>
                 </li>
+                <li class="header">CMS</li>
+                <li class="treeview">
+                    <a href="#"><i class='fa fa-microchip'></i> <span>{{ trans('adminlte_lang::message.devices') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        @can('devices.index') 
+                            <li><a href="{{ url('devicesTenant') }}"><i class='fa fa-microchip'></i><span>{{ trans('adminlte_lang::message.devices') }}</span></a></li>
+                        @endcan
+                        @can('locations.index') 
+                            <li><a href="{{ url('locations') }}"><i class='fa fa-map-marker'></i><span>{{ trans('adminlte_lang::message.locations') }}</span></a></li>
+                        @endcan
+                        @can('locations.assign') 
+                            <li><a href="{{ url('device_location') }}"><i class='fa fa-code-fork'></i><span>{{ trans('adminlte_lang::message.assign') }}</span></a></li>
+                        @endcan
+                    
+                    </ul>
+                </li>
             @endif
         </ul><!-- /.sidebar-menu -->
     </section>

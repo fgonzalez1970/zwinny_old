@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLotSubtipoDispositivosTable extends Migration
+class CreateIotSubtipoDispositivosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateLotSubtipoDispositivosTable extends Migration
      */
     public function up()
     {
-        Schema::create('lot_subtipo_dispositivos', function (Blueprint $table) {
+        Schema::create('Iot_subtipo_dispositivos', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('id_tipo');
             $table->string('name');
@@ -29,6 +29,6 @@ class CreateLotSubtipoDispositivosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lot_subtipo_dispositivos');
+        Schema::dropIfExists('Iot_subtipo_dispositivos');
     }
 }

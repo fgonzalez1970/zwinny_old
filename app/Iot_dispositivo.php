@@ -3,11 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Lot_subtipo_dispositivo;
-use App\Lot_tipo_dispositivo;
-use App\Lot_dispositivos_tenant;
+use App\Iot_subtipo_dispositivo;
+use App\Iot_tipo_dispositivo;
+use App\Iot_dispositivos_tenant;
 
-class Lot_dispositivo extends Model
+class Iot_dispositivo extends Model
 {
     protected $connection = 'mysql';
 
@@ -21,12 +21,12 @@ class Lot_dispositivo extends Model
  	*/
 	public function haveTenants()
 	{
-    	return $this->belongsToMany('App\Lot_dispositivos_tenant', 'lot_dispositivos_tenants', 'id_dispositivo');
+    	return $this->belongsToMany('App\Iot_dispositivos_tenant', 'Iot_dispositivos_tenants', 'id_dispositivo');
     }
 
 	public function tenants()
 	{
-    	return $this->belongsToMany('App\Tenant', 'lot_dispositivos_tenants', 'id_dispositivo', 'id_tenant');
+    	return $this->belongsToMany('App\Tenant', 'Iot_dispositivos_tenants', 'id_dispositivo', 'id_tenant');
 	}
     
 }

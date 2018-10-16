@@ -82,12 +82,12 @@
                     <div class="form-group">
                       <label class="control-label col-lg-2" for="date_up">{{trans('adminlte_lang::message.dateAct')}}:</label>
                       <div class="col-lg-4">
-                          <input class="form-control" type="date" value="{{ $hoy }}" name="date_up" id="date_up" required>   
+                          <input class="form-control" type="date" value="{{date('Y-m-d', strtotime($device->date_up))}}" name="date_up" id="date_up" required>   
                           <p class="errorDateUp text-center alert alert-danger hidden"></p>
                       </div>
                       <label class="control-label col-lg-2" for="date_down">{{trans('adminlte_lang::message.dateSusp')}}:</label>
                       <div class="col-lg-4">
-                          <input class="form-control" type="date" value="" name="date_down" id="date_down"> <p class="errorDateDown text-center alert alert-danger hidden"></p>
+                          <input class="form-control" type="date" value="{{date('Y-m-d', strtotime($device->date_down))}}" name="date_down" id="date_down"> <p class="errorDateDown text-center alert alert-danger hidden"></p>
                       </div>
                     </div><br />
                </table>

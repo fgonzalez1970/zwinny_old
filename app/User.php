@@ -292,11 +292,11 @@ class User extends Authenticatable
 
       //llenamos la tabla de las resultados de los contactos
         DB::statement("INSERT INTO `t02m13_resultscontacts` (`id`, `id_statuscont`, `name`, `description`, `created_at`, `updated_at`) VALUES
-    (1, 3, 'Cortado', 'Cortado', NULL, NULL),
-    (2, 3, 'Ocupado', 'Tono ocupado', NULL, NULL),
-    (3, 3, 'Rechazado', 'Rechazado por la persona', NULL, NULL),
+    (1, 3, 'Cortada', 'Cortada', NULL, NULL),
+    (2, 3, 'Ocupada', 'Tono ocupada', NULL, NULL),
+    (3, 3, 'Rechazada', 'Rechazada por la persona', NULL, NULL),
     (4, 3, 'Identificador Erróneo', 'Num, nick, email, id, etc erróneo', NULL, NULL),
-    (5, 2, 'Concretado', 'Contacto Concretado y finalizado', NULL, NULL), 
+    (5, 2, 'Concretada', 'Actividad Concretada y finalizado', NULL, NULL), 
     (6, 1, 'Por Ejecutar', 'Planeada por ejectutar', NULL, NULL);");
 
          //creamos la tabla de contactos
@@ -322,7 +322,36 @@ class User extends Authenticatable
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
-      
+    /****************
+    
+        Sección Locations/Devices
+  
+    ************/
+        //creamos la tabla de localidades para los dispositivos
+        DB::statement("CREATE TABLE IF NOT EXISTS `iot_locations` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `description` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `coordinates` varchar(255) NOT NULL,
+  `date_up` timestamp NULL DEFAULT NULL,
+  `date_down` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+        //creamos la tabla de relaciones devices - locations
+        
+        DB::statement('CREATE TABLE IF NOT EXISTS `iot_locations_devices` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_location` int(11) unsigned NOT NULL,
+  `id_device` int(10) unsigned NOT NULL,
+  `date_up` timestamp NULL DEFAULT NULL,
+  `date_down` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
 
     }//function createSchema 
 

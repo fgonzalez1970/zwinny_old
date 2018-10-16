@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLotDispositivoDetallesTable extends Migration
+class CreateIotDispositivoDetallesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateLotDispositivoDetallesTable extends Migration
      */
     public function up()
     {
-        Schema::create('lot_dispositivo_detalles', function (Blueprint $table) {
+        Schema::create('Iot_dispositivo_detalles', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('id_dispositivo')->nullable();
-            //$table->foreign('id_dispositivo')->references('id')->on('lot_dispositivos');
+            //$table->foreign('id_dispositivo')->references('id')->on('Iot_dispositivos');
             $table->tinyInteger('battery')->nullable();
             $table->tinyInteger('tx_power')->nullable();
             $table->tinyInteger('adv_interval')->nullable();
@@ -41,6 +41,6 @@ class CreateLotDispositivoDetallesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lot_dispositivo_detalles');
+        Schema::dropIfExists('Iot_dispositivo_detalles');
     }
 }
