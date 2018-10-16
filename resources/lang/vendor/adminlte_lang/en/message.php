@@ -283,4 +283,5 @@ return [
     'totalocations'     => 'Total Locations',
     'withdevice' => 'With Device',
     'coordinates' => 'Coordinates',
+    'radiusMts' => 'Radius(mts)',
 ];

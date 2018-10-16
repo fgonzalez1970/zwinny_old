@@ -6,6 +6,7 @@
 
 <?php 
   $hoy = date('Y-m-d');
+  $APIKEY = getenv('GMAPS_APIKEY');
 ?>
 <style type="text/css">
 #mapa{width:100%;height:60%;float:right;}
@@ -16,7 +17,7 @@
 			<div class="col-md-12 col-md-offset1">
 				<!-- Default box -->
 				<div class="box">
-
+    
 					<div class="box-header with-border">
 						<h3 class="box-title">{{ trans('adminlte_lang::message.createlocation') }}</h3>
 						    
@@ -45,22 +46,22 @@
                           <input type="text" class="form-control" id="description" name="description" value="" required>
                           <p class="errorDescrip text-center alert alert-danger hidden"></p>
                       </div>
-                      <div class="col-lg-6">
-                            <div id="mapa"></div>
-                      </div>             
-                    </div><br/>
-                    
-                    <div class="form-group">
                       <label class="control-label col-lg-2" for="id_tipo">{{trans('adminlte_lang::message.address')}}:</label>
                       <div class="col-lg-4">
                           <input type="text" class="form-control" id="address" name="address" value="" required>
                           <p class="errorAddress text-center alert alert-danger hidden"></p>
-                      </div>
+                      </div>   
+                    <div class="form-group">
                       <label class="control-label col-lg-2" for="coordinates">{{trans('adminlte_lang::message.coordinates')}}:</label>
                       <div class="col-lg-4">
                           <input type="text" class="form-control" id="coordinates" name="coordinates" value="" required>
                           <p class="errorCoord text-center alert alert-danger hidden"></p>
                       </div>
+                      <label class="control-label col-lg-2" for="radius">{{trans('adminlte_lang::message.radiusMts')}}:</label>
+                      <div class="col-lg-4">
+                          <input type="number" step="0.01" class="form-control" id="radius" name="radius" value="" required>
+                          <p class="errorRadius text-center alert alert-danger hidden"></p>
+                      </div> 
                     </div><br/>
                     <div class="form-group">
                       <label class="control-label col-lg-2" for="date_up">{{trans('adminlte_lang::message.dateAct')}}:</label>
@@ -70,9 +71,16 @@
                       </div>
                       <label class="control-label col-lg-2" for="date_down">{{trans('adminlte_lang::message.dateSusp')}}:</label>
                       <div class="col-lg-4">
-                          <input class="form-control" type="date" value="" name="date_down" id="date_down"> <p class="errorDateDown text-center alert alert-danger hidden"></p>
+                          <input class="form-control" type="date" value="" name="date_down" id="date_down"> 
+                          <p class="errorDateDown text-center alert alert-danger hidden"></p>
                       </div>
-                    </div><br />
+                    </div><br><br>
+                    <div class="form-group">
+                        <div class="col-lg-12">
+                            <div id="mapa"></div>
+                        </div>             
+                    </div><br/>
+                 
                </table>
 						</div>
 					</div>
@@ -92,7 +100,7 @@
   <script type="text/javascript" src="/js/script_locations.js"></script>  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
   <script src="/js/vendor_plugins/timepicker/bootstrap-timepicker.min.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCp22iEL7evR6yOxN19PU6_W8k4m3mw3-w&amp;language=es"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ getenv('GMAPS_APIKEY') }}&language=es"></script>
   <script type="text/javascript">
     var map;
     var geocoder;

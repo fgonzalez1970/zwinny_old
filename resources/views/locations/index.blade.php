@@ -68,6 +68,7 @@ $locationControl = new Iot_locationController; ?>
 										<th>{{ trans('adminlte_lang::message.description') }}</th>
 										<th>{{ trans('adminlte_lang::message.address') }}</th>
 										<th>{{ trans('adminlte_lang::message.coordinates') }}</th>
+										<th>{{ trans('adminlte_lang::message.radiusMts') }}</th>
 										<th>{{ trans('adminlte_lang::message.dateAct') }}</th>
 										<th>{{ trans('adminlte_lang::message.dateSusp') }}</th>
 										<th>{{ trans('adminlte_lang::message.actions') }}</th>
@@ -80,6 +81,7 @@ $locationControl = new Iot_locationController; ?>
 											<td>{{ $location->description }}</td>
 											<td>{{ $location->address }}</td>
 											<td>{{ $location->coordinates }}</td>
+											<td>{{ $location->radius }}</td>
 											<td>@if ($location->date_up!=NULL) 
 												{{ date('d/m/Y', strtotime($location->date_up)) }}
 											@endif</td>

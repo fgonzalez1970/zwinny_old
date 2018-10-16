@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Iot_location extends Model
 {
     protected $fillable = [
-        'description','address','coordinates','date_up','date_down','created_at','updated_at',
+        'description','address','coordinates','radius','date_up','date_down','created_at','updated_at',
     ];
     //
 }

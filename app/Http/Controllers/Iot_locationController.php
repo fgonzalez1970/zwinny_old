@@ -55,6 +55,8 @@ class Iot_locationController extends Controller
         return view('locations.index', compact('locations', 'counts'));
     }
 
+   
+
     /**
      * Show the form for creating a new resource.
      *
@@ -148,10 +150,34 @@ class Iot_locationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        //$input = Input::all();
+        //$validator = Validator::make(Input::all(), $this->rules);
+       
+        $name_bd = session('name_bd');
+        $loc = new Iot_location;
+        $host = getenv('HOST_DB');
+        Config::set('database.connections.bdcnxtemp', array(
+            'driver'    => 'mysql',
+            'host'      => $host,
+            'database'  => $name_bd,
+            'username'  => 'crm_zwinny',
+            'password'  => '2018gdl',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+        ));
+
+        DB::setDefaultConnection('bdcnxtemp');
+        $loc->setConnection('bdcnxtemp');
+        $loc = Iot_location::findOrFail($id)->update($data);
+        
+        return redirect()->route('locations.index')->with('success','Registro modificado satisfactoriamente');   
     }
 
-    /**
+    
+
+     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -159,6 +185,36 @@ class Iot_locationController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $name_bd = session('name_bd');
+        $host = getenv('HOST_DB');
+        Config::set('database.connections.bdcnxtemp', array(
+            'driver'    => 'mysql',
+            'host'      => $host,
+            'database'  => $name_bd,
+            'username'  => 'crm_zwinny',
+            'password'  => '2018gdl',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+        ));
+
+        DB::setDefaultConnection('bdcnxtemp');
+        $loc = new Iot_location;
+        $loc->setConnection('bdcnxtemp');
+        $loc = Iot_location::findOrFail($id);
+        //$loc->delete();
+
+        //verificamos si tiene dispositivos asignados vencidos o vigentes
+        $disp_loc = Iot_locations_device::where('id_location', $id)->get();
+        //$disp_tenants = $device->haveTenants()->get();
+        //dd($disp_tenants);
+        if (count($disp_loc)>0){
+            //dd("tiene");
+            return redirect()->route('locations.index')->with('error','La localidad tiene asignado al menos un dispostivo');
+        } else {
+            $loc->delete();
+            return redirect()->route('locations.index')->with('success','Registro eliminado satisfactoriamente');
+        }
     }
+
 }

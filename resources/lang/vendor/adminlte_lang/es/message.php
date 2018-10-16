@@ -282,4 +282,5 @@ return [
     'totalocations'     => 'Total Localidades',
     'withdevice' => 'Con Dispositivo',
     'coordinates' => 'Coordenadas',
+    'radiusMts' => 'Radio(mts)',
 ];

@@ -186,7 +186,7 @@ Route::group(['middleware' => 'auth'], function () {
 		->middleware('has.permission:locations.edit');
 	Route::get('locations/{contact}', 'Iot_locationController@show')->name('locations.show')
 		->middleware('has.permission:locations.show');
-	Route::delete('locations/{contact}', 'Iot_locationController@destroy')->name('locations.destroy')
+	Route::get('locations/{contact}', 'Iot_locationController@destroy')->name('locations.destroy')
 		->middleware('has.permission:locations.destroy');
 	Route::get('/locations/export/excel', 'Iot_locationController@export')->name('locations.export')
 		->middleware('has.permission:locations.export');
