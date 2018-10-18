@@ -262,6 +262,8 @@ return [
     'devicesActives'         => 'Dispositivos Activos',
     'devicesInactives'         => 'Dispositivos Inactivos',
     'devicesAssignLoc'      =>'Dispositivos Asignados en Localidad',
+    'deviceAssignedToLocation' => 'Dispositivos Asignados en esta Localidad',
+    'deviceNewAssign' => 'Asignar un nuevo Dispositivo a esta Localidad',
     'totaldevices'         => 'Total Dispositivos',
     'createdevice'      => 'Crear Dispositivo',
     'showdevice'      => 'Mostrar Dispositivo',

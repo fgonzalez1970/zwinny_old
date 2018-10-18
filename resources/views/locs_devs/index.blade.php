@@ -67,8 +67,7 @@ $locationControl = new Iot_locationController; ?>
 							</div>
 						</div>
 						<div class="table-responsive">
-						  	
-						  	<table id="tickets" class="table mt-0 table-hover no-wrap" data-page-size="10">
+						  	<table id="table_locs_devs" class="table mt-0 table-hover no-wrap" data-page-size="10">
 
 								<thead>
 									<tr>

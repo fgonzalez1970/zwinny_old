@@ -62,7 +62,6 @@ class Iot_locations_deviceController extends Controller
         $user = Auth::user();
         //dd($user->id_tenant);
         //traemos los devices asignados al id tenant del usuario
-       
         $hoy=date('Y-m-d');
         //buscar los devices para este tenant
         $devices_ten = Iot_dispositivo::join('iot_dispositivos_tenants','iot_dispositivos.id','=','iot_dispositivos_tenants.id_dispositivo')->where('iot_dispositivos_tenants.id_tenant','=',$user->tenant_id)->where('iot_dispositivos_tenants.date_down','>',$hoy)->orderBy('name')->get();
@@ -196,6 +195,48 @@ class Iot_locations_deviceController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showDevLoc($id_loc)
+    {
+        $user = Auth::user();
+        DB::setDefaultConnection('mysql');
+        $hoy=date('Y-m-d');
+        //buscar los devices para este tenant
+        $devices_ten = Iot_dispositivo::join('iot_dispositivos_tenants','iot_dispositivos.id','=','iot_dispositivos_tenants.id_dispositivo')->where('iot_dispositivos_tenants.id_tenant','=',$user->tenant_id)->where('iot_dispositivos_tenants.date_down','>',$hoy)->orderBy('name')->get();
+
+        $name_bd = session('name_bd');
+        //dd($name_bd);
+        $host = getenv('HOST_DB');
+        Config::set('database.connections.bdcnxtemp', array(
+            'driver'    => 'mysql',
+            'host'      => $host,
+            'database'  => $name_bd,
+            'username'  => 'crm_zwinny',
+            'password'  => '2018gdl',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+        ));
+
+        DB::setDefaultConnection('bdcnxtemp');
+        $locs_devs = new Iot_locations_device;
+        $locs_devs->setConnection('bdcnxtemp');
+
+        //recuperamos las relaciones devices/locations para la localidad id_loc
+        $locs_devs = Iot_locations_device::where('id_location',$id_loc)->orderBy('date_up')->get();
+        //recuperamos la localidad en cuestion
+        $location =  Iot_location::findOrFail($id_loc);
+        //recuperamos las devices aun sin asignar localidad
+        //recuperamos el id del tenant según usuario logueado
+       
+        
+
+        return view('locs_devs.devloc', compact('locs_devs','devices_ten','location'));
+    }
+    /**
      * .
      *
      * @param  int  $id
@@ -203,7 +244,24 @@ class Iot_locations_deviceController extends Controller
      */
     public function hasValidAssigned($id_device)
     {
+
         $hoy = date('Y-m-d');
+        $name_bd = session('name_bd');
+        //dd($name_bd);
+        $host = getenv('HOST_DB');
+        Config::set('database.connections.bdcnxtemp', array(
+            'driver'    => 'mysql',
+            'host'      => $host,
+            'database'  => $name_bd,
+            'username'  => 'crm_zwinny',
+            'password'  => '2018gdl',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+        ));
+
+        DB::setDefaultConnection('bdcnxtemp');
+        
         $list_dev = Iot_locations_device::where('id_device',$id_device)->where('date_down','>=',$hoy)->get();
         if (count($list_dev)>0){
             return true;

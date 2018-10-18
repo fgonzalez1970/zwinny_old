@@ -258,6 +258,8 @@ return [
     'moduleLeal' => 'Loyalty Module',
     'devices'         => 'Devices',
     'devicesAssignTenant'         => 'Tenant Devices Assigned',
+    'deviceAssignedToLocation' => 'Devices Assigned to Location',
+    'deviceNewAssign' => 'Assign New Device to Location',
     'device'         => 'Dispositivo',
     'devicesActives'         => 'Devices Actives',
     'devicesInactives'         => 'Devices Inactives',

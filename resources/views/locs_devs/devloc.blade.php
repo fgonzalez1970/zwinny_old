@@ -6,6 +6,8 @@
 
 <?php
   use App\Http\Controllers\Iot_locations_deviceController;
+  use App\Iot_dispositivo;
+  $dev = new Iot_dispositivo;
   $dev_loc = new Iot_locations_deviceController;
   $hoy = date('Y-m-d');
   $APIKEY = getenv('GMAPS_APIKEY');
@@ -38,15 +40,48 @@
             @endif
             <div id="mensaje">
             </div>
-          <form name="form_create_locdev" method="POST" action="{{ route('locs_devs.store') }}" accept-charset="UTF-8" role="form">
-            @foreach ($locations as $location)
-                <input type="hidden" name="coord_loc_{{ $location->id }}" id="coord_loc_{{ $location->id }}" value="{{$location->coordinates}}"/>
-            @endforeach
+          <form name="form_locdev" method="POST" action="{{ route('locs_devs.store') }}" accept-charset="UTF-8" role="form">
+            <input type="hidden" name="var_coord" id="var_coord" value="{{$location->coordinates}}"/>
+            <input type="hidden" name="id_location" id="id_location" value="{{$location->id}}"/>
 					<div class="box-body">
+            <div class="table-responsive">
+                <table id="table_locs_devs" class="table mt-0 table-hover no-wrap">
+                <thead>
+                  <tr>
+                    <th colspan="4" style="background-color: #0866A7; color: #fff">{{ trans('adminlte_lang::message.deviceAssignedToLocation') }}</th>
+                  </tr>
+                  <tr>
+                    <th>ID</th>
+                    <th>{{ trans('adminlte_lang::message.device') }}</th>
+                    <th>{{ trans('adminlte_lang::message.dateAct') }}</th>
+                    <th>{{ trans('adminlte_lang::message.dateSusp') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($locs_devs as $loc_dev)
+                    <tr class="item{{$loc_dev->id}}">
+                      <td>{{ $loc_dev->id }}</td>
+                      <td>{{ $dev->getNameById($loc_dev->id_device) }}</td>
+                      <td>@if ($loc_dev->date_up!=NULL) 
+                        {{ date('d/m/Y', strtotime($loc_dev->date_up)) }}
+                      @endif</td>
+                      <td>@if ($loc_dev->date_down!=NULL) 
+                        {{ date('d/m/Y', strtotime($loc_dev->date_down)) }}
+                      @endif</td>            
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
 						<div class="table-responsive">
 						  <table class="table table-bordered table-striped" id="locationTable">
 							 	{{ csrf_field() }}
+                    <div style="background-color: #3CFAF8">{{trans('adminlte_lang::message.deviceNewAssign')}}</div>
                     <div class="form-group">
+                      <label class="control-label col-lg-2" for="name">{{trans('adminlte_lang::message.location')}}:</label>
+                      <div class="col-lg-4">
+                          <input type="text" class="form-control" id="txt_location" name="txt_location" value="{{ $location->description }}" disabled>
+                      </div>
                       <label class="control-label col-lg-2" for="id_device">{{trans('adminlte_lang::message.device')}}:</label>
                       <div class="col-lg-4">
                           <select class="form-control select_box" id="id_device" name="id_device" style="width: 100%" required>
@@ -55,16 +90,6 @@
                                 @if (!$dev_loc->hasValidAssigned($device->id_dispositivo))
                                 <option value="{{$device->id_dispositivo}}">{{$device->name}}</option>
                                 @endif
-                              @endforeach    
-                          </select>
-                          <p class="errorIdDev text-center alert alert-danger hidden"></p>
-                      </div>
-                      <label class="control-label col-lg-2" for="id_location">{{trans('adminlte_lang::message.location')}}:</label>
-                      <div class="col-lg-4">
-                          <select class="form-control select_box" id="id_location" name="id_location" style="width: 100%" required>
-                            <option value="">- Seleccione -</option>
-                              @foreach ($locations as $location)
-                                <option value="{{$location->id}}">{{$location->description}}</option>
                               @endforeach    
                           </select>
                           <p class="errorIdLoc text-center alert alert-danger hidden"></p>
@@ -162,19 +187,12 @@ window.onload = function () {
 
   
   
-    //cambiar el marker según la sel de localidad
-    $("#id_location").change(function() {
+    //poner el marker según la sel de localidad
         //ver la loc seleccionada y sacar sus coord
-        var id = $("#id_location option:selected").val();
+        var id_location = $("#id_location").val();
+        var coord = $("#var_coord").val();
         //traemos el device elegido
         var device_txt = $("#id_device option:selected").text();
-        //alert(device_txt);
-        var varCord ="coord_loc_"+id;
-        //alert(varCord);
-        var coord = document.getElementById(varCord).value;
-        //alert (coord);
-        //borramos los markers que pudo haber antes
-        deleteMarkers();
         //creamos el marker según la loc
         var input = coord.replace('(', '');
         var latlngStr = input.split(",", 2);
@@ -189,7 +207,6 @@ window.onload = function () {
         });
         //lo metemos en el arreglo
         markers.push(marker);
-    });//change location
 
 }//onload function
 

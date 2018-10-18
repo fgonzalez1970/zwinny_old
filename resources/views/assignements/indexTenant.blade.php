@@ -61,7 +61,7 @@ $deviceTenantControl = new Iot_dispositivos_tenantController; ?>
 							</div>
 							<!-- Column -->
 							<div class="col-md-6 col-lg-3 col-xlg-3">
-								<div class="box box-inverse box-danger">
+								<div class="box box-inverse box-purple">
 									<div class="box-body text-center">
 										<h1><?php echo $counts[3]; ?></h1>
 										<h6>{{ trans('adminlte_lang::message.devicesAssignLoc') }}</h6>
