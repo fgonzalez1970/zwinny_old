@@ -112,7 +112,7 @@
                             <li><a href="{{ url('locations') }}"><i class='fa fa-map-marker'></i><span>{{ trans('adminlte_lang::message.locations') }}</span></a></li>
                         @endcan
                         @can('locations.assign') 
-                            <li><a href="{{ url('device_location') }}"><i class='fa fa-code-fork'></i><span>{{ trans('adminlte_lang::message.assign') }}</span></a></li>
+                            <li><a href="{{ url('locs_devs') }}"><i class='fa fa-code-fork'></i><span>{{ trans('adminlte_lang::message.assign') }}</span></a></li>
                         @endcan
                     
                     </ul>

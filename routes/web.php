@@ -123,6 +123,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('assignements/{assign}/delete', 'Iot_dispositivos_tenantController@destroy')->name('assignements.destroy')->middleware('has.permission:assignements.destroy');
 	Route::get('devicesTenant', 'Iot_dispositivos_tenantController@indexTenant')->name('devices.indexTenant')->middleware('has.permission:devices.index');
 
+
 	//Leads
 	Route::get('leads', 'T01_leadController@index')->name('t01_leads.index')
 		->middleware('has.permission:t01_leads.index');
@@ -179,7 +180,6 @@ Route::group(['middleware' => 'auth'], function () {
 		->middleware('has.permission:locations.create');
 	Route::get('locations/show/{id}', 'Iot_locationController@showDevices')->name('locations.showDevices')
 		->middleware('has.permission:locations.show');
-	
 	Route::get('locations/{contact}/edit', 'Iot_locationController@edit')->name('locations.edit')
 		->middleware('has.permission:locations.edit');	
 	Route::post('locations/{contact}', 'Iot_locationController@update')->name('locations.update')
@@ -192,6 +192,19 @@ Route::group(['middleware' => 'auth'], function () {
 		->middleware('has.permission:locations.export');
 	Route::post('/locations/import/excel', 'Iot_locationController@import')->name('locations.import')
 		->middleware('has.permission:locations.import');
+
+	//Locations-devices tenant
+	Route::get('locs_devs', 'Iot_locations_deviceController@index')->name('locs_devs.index')
+		->middleware('has.permission:locations.index');
+	Route::get('locs_devs/create', 'Iot_locations_deviceController@create')->name('locs_devs.create')
+		->middleware('has.permission:locations.assign');
+	Route::post('locs_devs/store', 'Iot_locations_deviceController@store')->name('locs_devs.store')
+		->middleware('has.permission:locations.assign');
+	Route::get('locs_devs/{contact}', 'Iot_locations_deviceController@destroy')->name('locs_devs.destroy')
+		->middleware('has.permission:locations.del_assign');
+	Route::get('devicesTenant/loc/{id_dev}', 'Iot_locations_deviceController@showLocDev')->name('devices.showLocDev')->middleware('has.permission:locations.show');
+	Route::get('locations/dev/{id_loc}', 'Iot_locations_deviceController@showDevLoc')->name('locations.showDevLoc')->middleware('has.permission:locations.show');
+	
 });
 
 

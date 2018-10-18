@@ -1,10 +1,15 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	{{ trans('adminlte_lang::message.locations') }}
+	{{ trans('adminlte_lang::message.assignDevLoc') }}
 @endsection
 
-<?php use App\Http\Controllers\Iot_locationController; 
+<?php 
+use App\Http\Controllers\Iot_locationController;
+use App\Iot_dispositivo;
+use App\Iot_location;
+$dev = new Iot_dispositivo;
+$loc = new Iot_location;
 $locationControl = new Iot_locationController; ?>
 
 @section('main-content')
@@ -16,14 +21,8 @@ $locationControl = new Iot_locationController; ?>
 				<div class="box">
 
 					<div class="box-header with-border">
-						<h3 class="box-title">{{ trans('adminlte_lang::message.locations') }}</h3>
-							<button class="btn btn-warning btn-sm pull-right export" onclick="location.href = '{{ route('locations.export') }}'">
-                  				<span class='glyphicon glyphicon-export'></span> {{trans('adminlte_lang::message.export')}}
-              				</button>&nbsp;&nbsp;
-              				<button type="button" class="import-modal btn btn-success btn-sm pull-right importE">
-                  				<span class='glyphicon glyphicon-import'></span> {{trans('adminlte_lang::message.importExcel')}}
-              				</button>&nbsp;&nbsp;
-              				<button type="button" class="btn btn-primary btn-sm pull-right create"  onclick="location.href = '{{ route('locations.create') }}'">
+						<h3 class="box-title">{{ trans('adminlte_lang::message.assignDevLoc') }}</h3>
+							<button type="button" class="btn btn-primary btn-sm pull-right create"  onclick="location.href = '{{ route('locs_devs.create') }}'">
                   				<span class='glyphicon glyphicon-plus'></span> {{trans('adminlte_lang::message.create')}}
               				</button>&nbsp;&nbsp;
 					</div>
@@ -44,16 +43,25 @@ $locationControl = new Iot_locationController; ?>
 								<div class="box box-inverse box-info">
 									<div class="box-body text-center">
 										<h1><?php echo $counts[0]; ?></h1>
-										<h6>{{ trans('adminlte_lang::message.totalocations') }}</h6>
+										<h6>{{ trans('adminlte_lang::message.totalassign') }}</h6>
 									</div>
 								</div>
 							</div>
 							<!-- Column -->
 							<div class="col-md-6 col-lg-3 col-xlg-3">
-								<div class="box box-inverse box-yellow">
+								<div class="box box-inverse box-success">
 									<div class="box-body text-center">
 										<h1><?php echo $counts[1]; ?></h1>
-										<h6>{{ trans('adminlte_lang::message.withdevice') }}</h6>
+										<h6>{{ trans('adminlte_lang::message.assignActives') }}</h6>
+									</div>
+								</div>
+							</div>
+							<!-- Column -->
+							<div class="col-md-6 col-lg-3 col-xlg-3">
+								<div class="box box-inverse box-danger">
+									<div class="box-body text-center">
+										<h1><?php echo $counts[2]; ?></h1>
+										<h6>{{ trans('adminlte_lang::message.assignInactives') }}</h6>
 									</div>
 								</div>
 							</div>
@@ -65,45 +73,38 @@ $locationControl = new Iot_locationController; ?>
 								<thead>
 									<tr>
 										<th>ID</th>
-										<th>{{ trans('adminlte_lang::message.description') }}</th>
-										<th>{{ trans('adminlte_lang::message.address') }}</th>
-										<th>{{ trans('adminlte_lang::message.coordinates') }}</th>
-										<th>{{ trans('adminlte_lang::message.radiusMts') }}</th>
+										<th>{{ trans('adminlte_lang::message.device') }}</th>
+										<th>{{ trans('adminlte_lang::message.location') }}</th>
 										<th>{{ trans('adminlte_lang::message.dateAct') }}</th>
 										<th>{{ trans('adminlte_lang::message.dateSusp') }}</th>
 										<th>{{ trans('adminlte_lang::message.actions') }}</th>
 									</tr>
 								</thead>
 								<tbody>
-									@foreach($locations as $location)
-										<tr class="item{{$location->id}}">
-											<td>{{ $location->id }}</td>
-											<td>{{ $location->description }}</td>
-											<td>{{ $location->address }}</td>
-											<td>{{ $location->coordinates }}</td>
-											<td>{{ $location->radius }}</td>
-											<td>@if ($location->date_up!=NULL) 
-												{{ date('d/m/Y', strtotime($location->date_up)) }}
+									@foreach($locs_devs as $loc_dev)
+										<tr class="item{{$loc_dev->id}}">
+											<td>{{ $loc_dev->id }}</td>
+											<td>{{ $dev->getNameById($loc_dev->id_device) }}</td>
+											<td>{{ $loc->getDescById($loc_dev->id_location) }}</td>
+											<td>@if ($loc_dev->date_up!=NULL) 
+												{{ date('d/m/Y', strtotime($loc_dev->date_up)) }}
 											@endif</td>
-											<td>@if ($location->date_down!=NULL) 
-												{{ date('d/m/Y', strtotime($location->date_down)) }}
+											<td>@if ($loc_dev->date_down!=NULL) 
+												{{ date('d/m/Y', strtotime($loc_dev->date_down)) }}
 											@endif</td>
 											<td width="15%">
-												@can('locations.edit')
+												@can('locs_devs.edit')
 												<a href="{{ action('Iot_locationController@edit', ['id' => $location->id]) }}" class="btn btn-primary btn-xs" title="Edit" data-toggle="tooltip" data-placement="top"><i class="fa fa-pencil-square-o"></i></a>
 												@endcan
-												@can('locations.show')
-												<a href="{{ action('Iot_locations_deviceController@showDevLoc', ['id' => $location->id]) }}" class="btn btn-success btn-xs" title="View/Assign Devices" data-toggle="tooltip" data-placement="top"><i class="fa fa-microchip"></i></a>
-												@endcan
 												@can('locations.destroy')
-												<a href="{{ action('Iot_locationController@destroy', ['id' => $location->id]) }}" class="btn btn-danger btn-xs" title="Delete" data-toggle="tooltip" data-placement="top"><i class="fa fa-trash-o"></i></a>
+												<a href="{{ action('Iot_locations_deviceController@destroy', ['id' => $loc_dev->id]) }}" class="btn btn-danger btn-xs" title="Delete" data-toggle="tooltip" data-placement="top"><i class="fa fa-trash-o"></i></a>
 												@endcan
 			                                </td>            
 										</tr>
 									@endforeach
 								</tbody>
 						  </table>
-						  {{ $locations->render() }}
+						  {{ $locs_devs->render() }}
 						</div>
 					</div>
 					<!-- /.box-body -->

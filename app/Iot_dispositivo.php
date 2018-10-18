@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Iot_subtipo_dispositivo;
 use App\Iot_tipo_dispositivo;
 use App\Iot_dispositivos_tenant;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 
 class Iot_dispositivo extends Model
 {
@@ -24,9 +26,16 @@ class Iot_dispositivo extends Model
     	return $this->belongsToMany('App\Iot_dispositivos_tenant', 'Iot_dispositivos_tenants', 'id_dispositivo');
     }
 
-	public function tenants()
+	public function getNameById($id)
 	{
-    	return $this->belongsToMany('App\Tenant', 'Iot_dispositivos_tenants', 'id_dispositivo', 'id_tenant');
+        //dd($id);
+        $name_bd = session('name_bd');
+        //dd($name_bd);
+        
+        DB::setDefaultConnection('mysql');
+        $dev = Iot_dispositivo::findOrFail($id);
+        //dd($dev);
+    	return $dev->name;
 	}
     
 }

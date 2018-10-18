@@ -257,7 +257,11 @@ return [
     'moduleLeal' => 'Módulo Lealtad',
     'devices'         => 'Dispositivos',
     'devicesAssign'         => 'Dispositivos Asignados',
+    'devicesAssignTenant'   => 'Dispositivos Asignados al Inquilino',
     'device'         => 'Dispositivo',
+    'devicesActives'         => 'Dispositivos Activos',
+    'devicesInactives'         => 'Dispositivos Inactivos',
+    'devicesAssignLoc'      =>'Dispositivos Asignados en Localidad',
     'totaldevices'         => 'Total Dispositivos',
     'createdevice'      => 'Crear Dispositivo',
     'showdevice'      => 'Mostrar Dispositivo',
@@ -283,4 +287,6 @@ return [
     'withdevice' => 'Con Dispositivo',
     'coordinates' => 'Coordenadas',
     'radiusMts' => 'Radio(mts)',
+    'assignDevLoc' => 'Asignaciones Dispositivo/Localidad',
+    'createAssignDevLoc' => 'Asignar Dispositivo/Localidad',
 ];

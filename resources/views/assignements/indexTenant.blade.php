@@ -15,7 +15,7 @@ $deviceTenantControl = new Iot_dispositivos_tenantController; ?>
 				<div class="box">
 
 					<div class="box-header with-border">
-						<h3 class="box-title">{{ trans('adminlte_lang::message.devicesAssign') }}</h3>
+						<h3 class="box-title">{{ trans('adminlte_lang::message.devicesAssignTenant') }}</h3>
 							<button type="button" class="btn btn-primary btn-sm pull-right create"  onclick="location.href = '{{ route('assignements.create') }}'">
                   				<span class='glyphicon glyphicon-plus'></span> {{trans('adminlte_lang::message.create')}}
               				</button>&nbsp;&nbsp;
@@ -46,7 +46,7 @@ $deviceTenantControl = new Iot_dispositivos_tenantController; ?>
 								<div class="box box-inverse box-yellow">
 									<div class="box-body text-center">
 										<h1><?php echo $counts[1]; ?></h1>
-										<h6>{{ trans('adminlte_lang::message.assignActives') }}</h6>
+										<h6>{{ trans('adminlte_lang::message.devicesActives') }}</h6>
 									</div>
 								</div>
 							</div>
@@ -55,7 +55,16 @@ $deviceTenantControl = new Iot_dispositivos_tenantController; ?>
 								<div class="box box-inverse box-danger">
 									<div class="box-body text-center">
 										<h1><?php echo $counts[2]; ?></h1>
-										<h6>{{ trans('adminlte_lang::message.assignInactives') }}</h6>
+										<h6>{{ trans('adminlte_lang::message.devicesInactives') }}</h6>
+									</div>
+								</div>
+							</div>
+							<!-- Column -->
+							<div class="col-md-6 col-lg-3 col-xlg-3">
+								<div class="box box-inverse box-danger">
+									<div class="box-body text-center">
+										<h1><?php echo $counts[3]; ?></h1>
+										<h6>{{ trans('adminlte_lang::message.devicesAssignLoc') }}</h6>
 									</div>
 								</div>
 							</div>
@@ -86,8 +95,9 @@ $deviceTenantControl = new Iot_dispositivos_tenantController; ?>
 											@endif</td>
 											<td width="15%">
 												@can('locations.show')
-												<a href="{{ action('Iot_locationController@show', ['id' => $dev_ten->id_device]) }}" class="btn btn-info btn-xs" title="View Location" data-toggle="tooltip" data-placement="top"><i class="fa fa-map-marker"></i></a>
+												<a href="{{ action('Iot_locations_deviceController@showLocDev', ['id' => $dev_ten->id_device]) }}" class="btn btn-info btn-xs" title="View/Assign Location" data-toggle="tooltip" data-placement="top"><i class="fa fa-map-marker"></i></a>
 												@endcan
+												
 			                                </td>            
 										</tr>
 									@endforeach

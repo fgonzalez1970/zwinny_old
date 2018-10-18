@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Session;
 use App\Iot_dispositivos_tenant;
 use App\Iot_dispositivo;
 use App\Iot_tipo_dispositivo;
 use App\Iot_subtipo_dispositivo;
+use App\Iot_locations_device;
 use App\User;
 use App\Tenant;
 
@@ -55,10 +59,27 @@ class Iot_dispositivos_tenantController extends Controller
         $counts[0] = count($devices_ten);
         //asignados activos
         $hoy = date('Y-m-d');
-        $counts[1] = Iot_dispositivos_tenant::where('id_tenant',$user->id_tenant)->where('date_down','>', $hoy)->count();
+        //dd($hoy);
+        $counts[1] = Iot_dispositivos_tenant::where('id_tenant',$user->tenant_id)->where('date_down','>', $hoy)->count();
         //asignados inactivos
-        $hoy = date('Y-m-d');
-        $counts[2] = Iot_dispositivos_tenant::where('id_tenant',$user->id_tenant)->where('date_down','<', $hoy)->count();
+        
+        $counts[2] = Iot_dispositivos_tenant::where('id_tenant',$user->tenant_id)->where('date_down','<', $hoy)->count();
+        //colocados en localidad
+        $name_bd = session('name_bd');
+        $host = getenv('HOST_DB');
+        Config::set('database.connections.bdcnxtemp', array(
+            'driver'    => 'mysql',
+            'host'      => $host,
+            'database'  => $name_bd,
+            'username'  => 'crm_zwinny',
+            'password'  => '2018gdl',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+        ));
+
+        DB::setDefaultConnection('bdcnxtemp');
+        $counts[3] = Iot_locations_device::where('date_down','>',$hoy)->count();
         //$counts[1] = Iot_dispositivo::where('id_status', 1)->count();
         
         
